@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Str; @endphp
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -327,7 +328,7 @@
                         <div class="section-content">
                             <div class="detail-row">
                                 <span class="detail-label">Name:</span>
-                                <div class="detail-value customer-name">{{ $order->name }}</div>
+                                <div class="detail-value customer-name">{{ Str::title($order->name) }}</div>
                             </div>
 
                             <div class="detail-row">
@@ -362,6 +363,8 @@
                                             // Address has commas, just clean up extra spaces
                                             $address = preg_replace('/\s+/', ' ', $address);
                                         }
+                                        // Capitalize each word
+                                        $address = Str::title($address);
                                     @endphp
                                     {{ $address }}
                                 </div>
@@ -369,19 +372,19 @@
 
                             <div class="detail-row">
                                 <span class="detail-label">City:</span>
-                                <div class="detail-value city-country">{{ $order->city }}</div>
+                                <div class="detail-value city-country">{{ Str::title($order->city) }}</div>
                             </div>
 
                             <div class="detail-row">
                                 <span class="detail-label">Country:</span>
-                                <div class="detail-value city-country">{{ $order->country }}</div>
+                                <div class="detail-value city-country">{{ Str::title($order->country) }}</div>
                             </div>
 
                             <div class="semesters-container">
                                 <span class="detail-label">Notes:</span>
                                 <div class="semesters">
                                     @foreach($order->semesters as $semester)
-                                        <span class="semester-badge">{{ $semester }}</span>
+                                        <span class="semester-badge">{{ Str::title($semester) }}</span>
                                     @endforeach
                                 </div>
                             </div>
@@ -394,7 +397,7 @@
                             @if($showRemarks)
                                 <div class="remarks-container">
                                     <span class="detail-label">Remarks:</span>
-                                    <div class="remarks">{{ $order->remarks }}</div>
+                                    <div class="remarks">{{ Str::title($order->remarks) }}</div>
                                 </div>
                             @endif
                         </div>

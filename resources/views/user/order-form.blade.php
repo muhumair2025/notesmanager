@@ -270,15 +270,13 @@
                                 <div class="col-md-6">
                                     <div class="form-check">
                                         <input type="radio" 
-                                               class="form-check-input @error('fees_paid') is-invalid @enderror" 
+                                               class="form-check-input form-check-input-lg @error('fees_paid') is-invalid @enderror" 
                                                id="fees_paid_yes" 
                                                name="fees_paid" 
                                                value="1"
                                                {{ old('fees_paid') == '1' ? 'checked' : '' }}>
                                         <label class="form-check-label" for="fees_paid_yes">
-                                            <strong class="text-success">
-                                                <i class="fas fa-check-circle me-2"></i>Paid
-                                            </strong>
+                                            <strong class="text-success">Paid</strong>
                                             <small class="text-muted d-block">I have already paid the fees</small>
                                         </label>
                                     </div>
@@ -286,15 +284,13 @@
                                 <div class="col-md-6">
                                     <div class="form-check">
                                         <input type="radio" 
-                                               class="form-check-input @error('fees_paid') is-invalid @enderror" 
+                                               class="form-check-input form-check-input-lg @error('fees_paid') is-invalid @enderror" 
                                                id="fees_paid_no" 
                                                name="fees_paid" 
                                                value="0"
                                                {{ old('fees_paid') == '0' ? 'checked' : '' }}>
                                         <label class="form-check-label" for="fees_paid_no">
-                                            <strong class="text-danger">
-                                                <i class="fas fa-times-circle me-2"></i>Not Paid
-                                            </strong>
+                                            <strong class="text-danger">Not Paid</strong>
                                             <small class="text-muted d-block">I will pay later</small>
                                         </label>
                                     </div>
@@ -337,6 +333,26 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('styles')
+<style>
+    .form-check-input-lg {
+        width: 1.5rem !important;
+        height: 1.5rem !important;
+        margin-top: 0.125rem;
+    }
+    
+    .form-check-input-lg:checked {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+    
+    .form-check-label {
+        margin-left: 0.5rem;
+        cursor: pointer;
+    }
+</style>
 @endsection
 
 @section('scripts')

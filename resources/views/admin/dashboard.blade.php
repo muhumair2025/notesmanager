@@ -191,6 +191,11 @@
                                                         <span class="d-none d-md-inline">Print</span>
                                                         (<span id="printCount">0</span>)
                                                     </button>
+                                                    <button type="button" class="btn btn-danger btn-sm flex-fill" id="deleteOrdersBtn" disabled>
+                                                        <i class="fas fa-trash me-1"></i>
+                                                        <span class="d-none d-md-inline">Delete</span>
+                                                        (<span id="deleteCount">0</span>)
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -908,6 +913,12 @@
             printCount.textContent = count;
             printInvoicesBtn.disabled = count === 0;
             
+            // Update delete button
+            const deleteCount = document.getElementById('deleteCount');
+            const deleteOrdersBtn = document.getElementById('deleteOrdersBtn');
+            deleteCount.textContent = count;
+            deleteOrdersBtn.disabled = count === 0;
+            
             // Update status controls
             const statusCount = document.getElementById('statusCount');
             const statusSelect = document.getElementById('statusSelect');
@@ -1045,6 +1056,57 @@
             document.body.appendChild(printForm);
             printForm.submit();
             document.body.removeChild(printForm);
+        });
+
+        // Delete orders functionality
+        const deleteOrdersBtn = document.getElementById('deleteOrdersBtn');
+        deleteOrdersBtn.addEventListener('click', function() {
+            const checkedBoxes = document.querySelectorAll('.order-checkbox:checked');
+            if (checkedBoxes.length === 0) {
+                alert('Please select at least one order to delete.');
+                return;
+            }
+
+            // Confirm deletion
+            const orderIds = Array.from(checkedBoxes).map(cb => cb.value);
+            const confirmMessage = `Are you sure you want to delete ${checkedBoxes.length} order(s)?\n\nOrder IDs: ${orderIds.join(', ')}\n\nThis action cannot be undone!`;
+            
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            // Create a form to submit the selected order IDs for deletion
+            const deleteForm = document.createElement('form');
+            deleteForm.method = 'POST';
+            deleteForm.action = '{{ route("admin.delete-orders") }}';
+            
+            // Add CSRF token
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            deleteForm.appendChild(csrfToken);
+            
+            // Add method override for DELETE
+            const methodInput = document.createElement('input');
+            methodInput.type = 'hidden';
+            methodInput.name = '_method';
+            methodInput.value = 'DELETE';
+            deleteForm.appendChild(methodInput);
+            
+            // Add selected order IDs
+            checkedBoxes.forEach(checkbox => {
+                const orderIdInput = document.createElement('input');
+                orderIdInput.type = 'hidden';
+                orderIdInput.name = 'order_ids[]';
+                orderIdInput.value = checkbox.value;
+                deleteForm.appendChild(orderIdInput);
+            });
+            
+            // Submit the form
+            document.body.appendChild(deleteForm);
+            deleteForm.submit();
+            document.body.removeChild(deleteForm);
         });
 
         // Form submission confirmation

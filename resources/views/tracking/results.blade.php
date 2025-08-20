@@ -183,6 +183,39 @@
             </div>
         </div>
     </div>
+    
+    <!-- Footer with Contact Information -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-lg-10">
+            <div class="card border-0 bg-light">
+                <div class="card-body text-center py-3">
+                    <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-phone text-primary me-2"></i>
+                            <span class="fw-bold">Contact Us:</span>
+                            <a href="tel:03409148304" class="text-decoration-none ms-2">
+                                <strong>03409148304</strong>
+                            </a>
+                        </div>
+                        <div class="d-none d-md-block">|</div>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-envelope text-primary me-2"></i>
+                            <span class="fw-bold">Email:</span>
+                            <a href="mailto:ssatechs1220@gmail.com" class="text-decoration-none ms-2">
+                                <strong>ssatechs1220@gmail.com</strong>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            For any questions about your order, feel free to contact us
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>

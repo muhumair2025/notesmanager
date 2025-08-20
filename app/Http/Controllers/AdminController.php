@@ -192,4 +192,19 @@ class AdminController extends Controller
         $count = count($request->order_ids);
         return redirect()->route('admin.dashboard')->with('success', "{$count} order(s) marked as dispatched with tracking IDs!");
     }
+
+    public function deleteOrders(Request $request)
+    {
+        // Authentication handled by AdminAuth middleware
+        
+        $request->validate([
+            'order_ids' => 'required|array',
+            'order_ids.*' => 'exists:orders,id'
+        ]);
+
+        // Delete the selected orders
+        $deletedCount = Order::whereIn('id', $request->order_ids)->delete();
+
+        return redirect()->route('admin.dashboard')->with('success', "{$deletedCount} order(s) deleted successfully!");
+    }
 }
