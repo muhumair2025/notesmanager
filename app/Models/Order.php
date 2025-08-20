@@ -22,6 +22,7 @@ class Order extends Model
         'country',
         'semesters',
         'remarks',
+        'fees_paid',
         'is_completed',
         'status',
         'tracking_id'
@@ -29,7 +30,8 @@ class Order extends Model
 
     protected $casts = [
         'semesters' => 'array',
-        'is_completed' => 'boolean'
+        'is_completed' => 'boolean',
+        'fees_paid' => 'boolean'
     ];
 
     public function getSemestersListAttribute()
@@ -72,5 +74,15 @@ class Order extends Model
             self::STATUS_DISPATCHED => 'Dispatched',
             self::STATUS_COMPLETED => 'Completed'
         ];
+    }
+
+    public function getFeesPaidBadgeAttribute()
+    {
+        return $this->fees_paid ? 'badge-success' : 'badge-danger';
+    }
+
+    public function getFeesPaidLabelAttribute()
+    {
+        return $this->fees_paid ? 'Paid' : 'Not Paid';
     }
 }

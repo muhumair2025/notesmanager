@@ -16,9 +16,13 @@ Route::post('/order', [UserController::class, 'store'])->name('user.store');
 // Admin routes
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.authenticate');
-Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
-Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
-Route::post('/admin/mark-completed', [AdminController::class, 'markCompleted'])->name('admin.mark-completed');
-Route::post('/admin/update-status', [AdminController::class, 'updateStatus'])->name('admin.update-status');
-Route::post('/admin/update-tracking-ids', [AdminController::class, 'updateTrackingIds'])->name('admin.update-tracking-ids');
-Route::post('/admin/print-invoices', [AdminController::class, 'printInvoices'])->name('admin.print-invoices');
+
+// Protected admin routes
+Route::middleware(['App\Http\Middleware\AdminAuth'])->group(function () {
+    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+    Route::post('/admin/mark-completed', [AdminController::class, 'markCompleted'])->name('admin.mark-completed');
+    Route::post('/admin/update-status', [AdminController::class, 'updateStatus'])->name('admin.update-status');
+    Route::post('/admin/update-tracking-ids', [AdminController::class, 'updateTrackingIds'])->name('admin.update-tracking-ids');
+    Route::post('/admin/print-invoices', [AdminController::class, 'printInvoices'])->name('admin.print-invoices');
+});

@@ -56,6 +56,15 @@
                                                 <div class="stat-label">Total</div>
                                             </div>
                                         </div>
+                                        <div class="stat-card fees-paid">
+                                            <div class="stat-icon">
+                                                <i class="fas fa-money-check-alt"></i>
+                                            </div>
+                                            <div class="stat-content">
+                                                <div class="stat-number">{{ $orders->where('fees_paid', true)->count() }}</div>
+                                                <div class="stat-label">Fees Paid</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -80,12 +89,18 @@
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-3">
-                                    <label class="form-label small text-muted mb-1">Status Filter</label>
+                                    <label class="form-label small text-muted mb-1">Filter by Status/Fees</label>
                                     <select name="status_filter" class="form-select">
-                                        <option value="">All Status</option>
-                                        @foreach(\App\Models\Order::getStatusOptions() as $value => $label)
-                                            <option value="{{ $value }}" {{ ($statusFilter ?? '') === $value ? 'selected' : '' }}>{{ $label }}</option>
-                                        @endforeach
+                                        <option value="">All Orders</option>
+                                        <optgroup label="Order Status">
+                                            @foreach(\App\Models\Order::getStatusOptions() as $value => $label)
+                                                <option value="{{ $value }}" {{ ($statusFilter ?? '') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                            @endforeach
+                                        </optgroup>
+                                        <optgroup label="Fees Status">
+                                            <option value="fees_paid" {{ ($statusFilter ?? '') === 'fees_paid' ? 'selected' : '' }}>Fees Paid</option>
+                                            <option value="fees_not_paid" {{ ($statusFilter ?? '') === 'fees_not_paid' ? 'selected' : '' }}>Fees Not Paid</option>
+                                        </optgroup>
                                     </select>
                                 </div>
                                 <div class="col-12 col-md-3">
@@ -117,7 +132,15 @@
                             <i class="fas fa-info-circle me-2"></i>
                             Showing {{ $orders->count() }} filtered result(s)
                             @if($searchTerm) for "<strong>{{ $searchTerm }}</strong>"@endif
-                            @if($statusFilter) with status "<strong>{{ \App\Models\Order::getStatusOptions()[$statusFilter] }}</strong>"@endif
+                            @if($statusFilter) 
+                                @if($statusFilter === 'fees_paid')
+                                    with fees status "<strong>Fees Paid</strong>"
+                                @elseif($statusFilter === 'fees_not_paid')
+                                    with fees status "<strong>Fees Not Paid</strong>"
+                                @else
+                                    with status "<strong>{{ \App\Models\Order::getStatusOptions()[$statusFilter] }}</strong>"
+                                @endif
+                            @endif
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
                     @endif
@@ -189,6 +212,7 @@
                                             <th class="d-none d-xl-table-cell">Address</th>
                                             <th class="d-none d-lg-table-cell">Semesters</th>
                                             <th class="d-none d-xl-table-cell">Remarks</th>
+                                            <th class="d-none d-lg-table-cell">Fees</th>
                                             <th>Status</th>
                                             <th class="d-none d-md-table-cell">Date</th>
                                         </tr>
@@ -263,10 +287,10 @@
                                                 <td class="d-none d-xl-table-cell">
                                                     @if($order->remarks)
                                                         <div style="max-width: 150px;">
-                                                            <small>{{ Str::limit($order->remarks, 30) }}</small>
+                                                            <small class="text-dark">{{ Str::limit($order->remarks, 30) }}</small>
                                                             @if(strlen($order->remarks) > 30)
                                                                 <button type="button" 
-                                                                        class="btn btn-link btn-sm p-0 text-decoration-none" 
+                                                                        class="btn btn-link btn-sm p-0 text-decoration-none text-primary" 
                                                                         data-bs-toggle="modal" 
                                                                         data-bs-target="#remarksModal{{ $order->id }}">
                                                                     <small>more...</small>
@@ -276,6 +300,12 @@
                                                     @else
                                                         <small class="text-muted">-</small>
                                                     @endif
+                                                </td>
+                                                <td class="d-none d-lg-table-cell">
+                                                    <span class="badge {{ $order->fees_paid_badge }} d-inline-flex align-items-center">
+                                                        <i class="fas {{ $order->fees_paid ? 'fa-check' : 'fa-times' }} me-1"></i>
+                                                        {{ $order->fees_paid_label }}
+                                                    </span>
                                                 </td>
                                                 <td>
                                                     <span class="badge {{ $order->status_badge }} d-inline-flex align-items-center">

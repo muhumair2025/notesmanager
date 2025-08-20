@@ -15,7 +15,7 @@
             font-family: 'Arial', sans-serif;
             font-size: 12px;
             line-height: 1.4;
-            color: #333;
+            color: #000;
             background: white;
             padding: 8mm;
         }
@@ -76,8 +76,8 @@
         /* Let CSS automatically handle page breaks based on available space */
 
         .invoice-header {
-            background: #f8f9fa;
-            border-bottom: 2px solid #333;
+            background: #fff;
+            border-bottom: 2px solid #000;
             padding: 2mm 4mm;
             display: flex;
             justify-content: space-between;
@@ -98,13 +98,13 @@
         .invoice-title {
             font-size: 12px;
             font-weight: bold;
-            color: #333;
+            color: #000;
             margin: 0;
         }
 
         .invoice-subtitle {
             font-size: 9px;
-            color: #666;
+            color: #000;
             margin: 0;
         }
 
@@ -115,12 +115,12 @@
         .order-id {
             font-size: 13px;
             font-weight: bold;
-            color: #333;
+            color: #000;
         }
 
         .order-date {
             font-size: 10px;
-            color: #666;
+            color: #000;
             margin-top: 2px;
         }
 
@@ -151,10 +151,10 @@
         .section-title {
             font-size: 16px;
             font-weight: bold;
-            background: #f0f0f0;
+            background: #fff;
+            border: 1px solid #000;
             padding: 1.5mm;
             text-align: center;
-            border: 1px solid #ddd;
             margin-bottom: 1.5mm;
             flex-shrink: 0;
         }
@@ -173,7 +173,7 @@
 
         .detail-label {
             font-weight: bold;
-            color: #555;
+            color: #000;
             font-size: 12px;
             min-width: 18mm;
             max-width: 18mm;
@@ -183,7 +183,7 @@
         }
 
         .detail-value {
-            color: #333;
+            color: #000;
             font-size: 13px;
             flex: 1;
             word-break: break-word;
@@ -195,31 +195,31 @@
         .phone-number {
             font-weight: bold;
             font-size: 15px;
-            color: #1976d2;
+            color: #000;
         }
 
         .city-country {
             font-weight: bold;
             font-size: 15px;
-            color: #1976d2;
+            color: #000;
         }
 
         .company-info {
             font-weight: bold;
-            color: #1976d2;
+            color: #000;
             font-size: 18px;
         }
 
         .customer-name {
             font-weight: bold;
             font-size: 16px;
-            color: #333;
+            color: #000;
         }
 
         .address-text {
             font-size: 15px;
             font-weight: 500;
-            color: #333;
+            color: #000;
             line-height: 1.3;
         }
 
@@ -231,7 +231,8 @@
         }
 
         .semesters {
-            background: #e3f2fd;
+            background: #fff;
+            border: 1px solid #000;
             padding: 1mm;
             border-radius: 1mm;
             display: flex;
@@ -242,8 +243,9 @@
         }
 
         .semester-badge {
-            background: #1976d2;
-            color: white;
+            background: #fff;
+            color: #000;
+            border: 1px solid #000;
             padding: 0.5mm 1mm;
             border-radius: 0.5mm;
             font-size: 7px;
@@ -259,8 +261,8 @@
         }
 
         .remarks {
-            background: #fff3cd;
-            border: 1px solid #ffeaa7;
+            background: #fff;
+            border: 1px solid #000;
             padding: 1.5mm;
             border-radius: 1mm;
             font-style: italic;
@@ -283,9 +285,9 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #007bff;
-            color: white;
-            border: none;
+            background: #fff;
+            color: #000;
+            border: 2px solid #000;
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
@@ -294,7 +296,7 @@
         }
 
         .print-button:hover {
-            background: #0056b3;
+            background: #f0f0f0;
         }
     </style>
 </head>
@@ -384,7 +386,12 @@
                                 </div>
                             </div>
 
-                            @if(!empty(trim($order->remarks)))
+                            @php
+                                $remarks = trim(strtolower($order->remarks ?? ''));
+                                $emptyValues = ['', 'null', 'nil', 'nothing', 'not', 'no', 'n/a', 'na', '-', '.', 'none'];
+                                $showRemarks = !empty($remarks) && !in_array($remarks, $emptyValues);
+                            @endphp
+                            @if($showRemarks)
                                 <div class="remarks-container">
                                     <span class="detail-label">Remarks:</span>
                                     <div class="remarks">{{ $order->remarks }}</div>

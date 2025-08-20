@@ -16,6 +16,15 @@
                         <div class="alert alert-success">
                             <i class="fas fa-check-circle me-2"></i>
                             {{ session('success') }}
+                            @if(session('show_track_button') && session('order_id'))
+                                <div class="mt-3">
+                                    <strong>Your Order ID: #{{ session('order_id') }}</strong>
+                                    <br>
+                                    <a href="{{ route('tracking.index') }}" class="btn btn-info btn-sm mt-2">
+                                        <i class="fas fa-search me-2"></i>Track Your Order
+                                    </a>
+                                </div>
+                            @endif
                         </div>
                     @endif
 
@@ -223,6 +232,10 @@
                                 <i class="fas fa-graduation-cap me-2"></i>Select Semesters * 
                                 <small class="text-muted">(You can select multiple semesters)</small>
                             </label>
+                            <div class="alert alert-info mb-3" role="alert">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <strong>یہاں وہ سمسٹر منتخب کریں جس کے آپ کو نوٹس چاہیے، آپ ایک سے زیادہ سمسٹرز بھی منتخب کر سکتے ہیں</strong>
+                            </div>
                             <div class="row">
                                 @php
                                     $semesters = ['Semester 1', 'Semester 2', 'Semester 3', 'Semester 4', 'Semester 5', 'Semester 6', 'Semester 7'];
@@ -246,6 +259,49 @@
                                 <div class="text-danger mt-2">
                                     <small><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</small>
                                 </div>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">
+                                <i class="fas fa-money-bill-wave me-2"></i>Fees Payment Status *
+                            </label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input type="radio" 
+                                               class="form-check-input @error('fees_paid') is-invalid @enderror" 
+                                               id="fees_paid_yes" 
+                                               name="fees_paid" 
+                                               value="1"
+                                               {{ old('fees_paid') == '1' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="fees_paid_yes">
+                                            <strong class="text-success">
+                                                <i class="fas fa-check-circle me-2"></i>Paid
+                                            </strong>
+                                            <small class="text-muted d-block">I have already paid the fees</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input type="radio" 
+                                               class="form-check-input @error('fees_paid') is-invalid @enderror" 
+                                               id="fees_paid_no" 
+                                               name="fees_paid" 
+                                               value="0"
+                                               {{ old('fees_paid') == '0' ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="fees_paid_no">
+                                            <strong class="text-danger">
+                                                <i class="fas fa-times-circle me-2"></i>Not Paid
+                                            </strong>
+                                            <small class="text-muted d-block">I will pay later</small>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            @error('fees_paid')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
 

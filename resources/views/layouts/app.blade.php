@@ -299,6 +299,11 @@
             background: linear-gradient(135deg, #28a745, #1e7e34) !important;
             color: white !important;
         }
+        
+        .badge-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333) !important;
+            color: white !important;
+        }
     </style>
 </head>
 <body>

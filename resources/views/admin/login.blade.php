@@ -12,6 +12,20 @@
                     <p class="mb-0 mt-2 opacity-90">Access the admin dashboard</p>
                 </div>
                 <div class="card-body">
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     @if($errors->any())
                         <div class="alert alert-danger">
                             <i class="fas fa-exclamation-circle me-2"></i>

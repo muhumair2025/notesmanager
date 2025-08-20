@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        // Simple authentication check
-        if (!session('admin_authenticated')) {
-            return redirect()->route('admin.login');
-        }
+        // Authentication and session refresh handled by AdminAuth middleware
         
         $query = Order::query();
         
@@ -33,9 +33,18 @@ class AdminController extends Controller
             });
         }
         
-        // Handle status filter
+        // Handle combined status and fees filter
         if ($request->filled('status_filter')) {
-            $query->where('status', $request->get('status_filter'));
+            $filterValue = $request->get('status_filter');
+            
+            if ($filterValue === 'fees_paid') {
+                $query->where('fees_paid', true);
+            } elseif ($filterValue === 'fees_not_paid') {
+                $query->where('fees_paid', false);
+            } else {
+                // Regular status filter
+                $query->where('status', $filterValue);
+            }
         }
         
         // Handle date range filter
@@ -68,23 +77,44 @@ class AdminController extends Controller
             'password' => 'required'
         ]);
 
-        // Simple hardcoded authentication
-        if ($request->email === 'ssatechs1220@gmail.com' && $request->password === 'ssatechs1220') {
-            session(['admin_authenticated' => true]);
-            return redirect()->route('admin.dashboard');
+        // Attempt to authenticate user
+        if (Auth::attempt($request->only('email', 'password'), true)) { // true = remember me
+            $user = Auth::user();
+            
+            // Check if user is admin
+            if (!$user->isAdmin()) {
+                Auth::logout();
+                return back()->withErrors(['You do not have admin privileges']);
+            }
+
+            // Set admin session data
+            session([
+                'admin_login_time' => now(),
+                'admin_last_activity' => now()
+            ]);
+            
+            // Extend session lifetime for admin users (30 days)
+            config(['session.lifetime' => 43200]);
+            
+            return redirect()->route('admin.dashboard')->with('success', 'Welcome back, ' . $user->name . '!');
         }
 
-        return back()->withErrors(['Invalid credentials']);
+        return back()->withErrors(['Invalid email or password']);
     }
 
     public function logout()
     {
-        session()->forget('admin_authenticated');
-        return redirect()->route('admin.login');
+        Auth::logout();
+        session()->invalidate();
+        session()->regenerateToken();
+        
+        return redirect()->route('admin.login')->with('success', 'You have been logged out successfully');
     }
 
     public function markCompleted(Request $request)
     {
+        // Authentication handled by AdminAuth middleware
+        
         $request->validate([
             'order_ids' => 'required|array',
             'order_ids.*' => 'exists:orders,id'
@@ -97,6 +127,8 @@ class AdminController extends Controller
 
     public function printInvoices(Request $request)
     {
+        // Authentication handled by AdminAuth middleware
+        
         $request->validate([
             'order_ids' => 'required|array',
             'order_ids.*' => 'exists:orders,id'
@@ -109,6 +141,8 @@ class AdminController extends Controller
 
     public function updateStatus(Request $request)
     {
+        // Authentication handled by AdminAuth middleware
+        
         $request->validate([
             'order_ids' => 'required|array',
             'order_ids.*' => 'exists:orders,id',
@@ -138,6 +172,8 @@ class AdminController extends Controller
 
     public function updateTrackingIds(Request $request)
     {
+        // Authentication handled by AdminAuth middleware
+        
         $request->validate([
             'order_ids' => 'required|array',
             'order_ids.*' => 'exists:orders,id',
