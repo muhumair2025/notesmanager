@@ -34,8 +34,11 @@ class TrackingController extends Controller
         // Hit the rate limiter after validation
         RateLimiter::hit($key, 60); // 1 minute
 
+        // Clean phone number for search (remove any non-digit characters)
+        $cleanPhone = preg_replace('/[^0-9]/', '', $request->phone_number);
+        
         $orders = Order::where('name', 'LIKE', '%' . $request->name . '%')
-                      ->where('phone_number', $request->phone_number)
+                      ->where('phone_number', 'LIKE', '%' . $cleanPhone . '%')
                       ->orderBy('created_at', 'desc')
                       ->get();
 

@@ -176,7 +176,7 @@
                            id="phone_number" 
                            name="phone_number" 
                            value="{{ old('phone_number') }}" 
-                           placeholder="Enter your phone number"
+                           placeholder="e.g., 03001234567 or +923001234567"
                            required>
                     @error('phone_number')
                         <div class="invalid-feedback">{{ $message }}</div>
@@ -185,7 +185,7 @@
 
                 <div class="info-text">
                     <i class="fas fa-info-circle me-1"></i>
-                    Use the same name and phone number from your order
+                    <strong>Important:</strong> Use the same name and phone number from your order. You can enter the phone number with or without country code (e.g., 03001234567 or +923001234567).
                 </div>
 
                 <div class="d-grid mb-3">
