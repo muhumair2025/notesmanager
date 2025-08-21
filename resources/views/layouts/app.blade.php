@@ -31,37 +31,35 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #f8f9fa;
             min-height: 100vh;
             color: var(--text-primary);
+            margin: 0;
+            padding: 0;
         }
 
         .main-container {
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
         }
 
         .card {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.95);
-            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            background: white;
+            transition: box-shadow 0.15s ease;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .card-header {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            border-radius: 20px 20px 0 0 !important;
+            background: #fff;
+            color: #495057;
+            border-radius: 8px 8px 0 0 !important;
+            border-bottom: 1px solid #e9ecef;
             padding: 2rem;
             text-align: center;
             border: none;
@@ -308,9 +306,9 @@
 </head>
 <body>
     @if(request()->is('admin/*'))
-        <nav class="navbar navbar-expand-sm navbar-light fixed-top">
+        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom fixed-top shadow-sm">
             <div class="container-fluid px-3">
-                <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
+                <a class="navbar-brand fw-bold text-primary" href="{{ route('admin.dashboard') }}">
                     <i class="fas fa-graduation-cap me-1 me-sm-2"></i>
                     <span class="d-none d-sm-inline">Notes Order Manager - </span>Admin
                 </a>
@@ -325,8 +323,10 @@
                 @endif
             </div>
         </nav>
-        <div style="margin-top: 70px;">
-            @yield('content')
+        <div style="margin-top: 70px; background-color: #f8f9fa; min-height: 100vh;">
+            <div class="container-fluid py-4">
+                @yield('content')
+            </div>
         </div>
     @else
         <div class="main-container">

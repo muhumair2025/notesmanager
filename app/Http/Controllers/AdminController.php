@@ -207,4 +207,47 @@ class AdminController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', "{$deletedCount} order(s) deleted successfully!");
     }
+
+    public function updateOrder(Request $request, Order $order)
+    {
+        // Authentication handled by AdminAuth middleware
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'phone_number' => 'required|string|max:20',
+            'secondary_phone_number' => 'nullable|string|max:20',
+            'full_address' => 'required|string',
+            'city' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'semesters' => 'required|string',
+            'remarks' => 'nullable|string',
+            'status' => 'required|in:pending,printing,packaging,dispatched,completed',
+            'tracking_id' => 'nullable|string|max:255',
+            'fees_paid' => 'required|boolean'
+        ]);
+
+        // Process semesters - convert comma-separated string to array
+        $semesters = array_map('trim', explode(',', $request->semesters));
+        $semesters = array_filter($semesters); // Remove empty values
+
+        // Update the order
+        $order->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'secondary_phone_number' => $request->secondary_phone_number,
+            'full_address' => $request->full_address,
+            'city' => $request->city,
+            'country' => $request->country,
+            'semesters' => $semesters,
+            'remarks' => $request->remarks,
+            'status' => $request->status,
+            'tracking_id' => $request->tracking_id,
+            'fees_paid' => $request->boolean('fees_paid'),
+            'is_completed' => $request->status === 'completed'
+        ]);
+
+        return redirect()->route('admin.dashboard')->with('success', "Order #{$order->id} updated successfully!");
+    }
 }

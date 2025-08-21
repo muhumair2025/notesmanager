@@ -3,78 +3,100 @@
 @section('title', 'Admin Dashboard')
 
 @section('content')
-<div class="container-xxl px-3 px-md-4 py-4">
-    <div class="row">
-        <div class="col-12">
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0 pb-0">
-                    <div class="dashboard-header">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6 col-md-12">
-                                <div class="header-content">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <div class="header-icon">
-                                            <i class="fas fa-tachometer-alt"></i>
-                                        </div>
-                                        <div class="header-text">
-                                            <h2 class="dashboard-title mb-0">Orders Dashboard</h2>
-                                        </div>
-                                    </div>
-                                    <p class="dashboard-subtitle mb-0">
-                                        <i class="fas fa-book me-2 text-primary"></i>
-                                        Manage all semester notes orders efficiently
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-12 mt-3 mt-lg-0">
-                                <div class="stats-section">
-                                    <div class="d-flex flex-wrap gap-3 justify-content-lg-end justify-content-center">
-                                        <div class="stat-card completed">
-                                            <div class="stat-icon">
-                                                <i class="fas fa-check-circle"></i>
-                                            </div>
-                                            <div class="stat-content">
-                                                <div class="stat-number">{{ $orders->where('is_completed', true)->count() }}</div>
-                                                <div class="stat-label">Completed</div>
-                                            </div>
-                                        </div>
-                                        <div class="stat-card pending">
-                                            <div class="stat-icon">
-                                                <i class="fas fa-clock"></i>
-                                            </div>
-                                            <div class="stat-content">
-                                                <div class="stat-number">{{ $orders->where('is_completed', false)->count() }}</div>
-                                                <div class="stat-label">Pending</div>
-                                            </div>
-                                        </div>
-                                        <div class="stat-card total">
-                                            <div class="stat-icon">
-                                                <i class="fas fa-list-alt"></i>
-                                            </div>
-                                            <div class="stat-content">
-                                                <div class="stat-number">{{ $orders->count() }}</div>
-                                                <div class="stat-label">Total</div>
-                                            </div>
-                                        </div>
-                                        <div class="stat-card fees-paid">
-                                            <div class="stat-icon">
-                                                <i class="fas fa-money-check-alt"></i>
-                                            </div>
-                                            <div class="stat-content">
-                                                <div class="stat-number">{{ $orders->where('fees_paid', true)->count() }}</div>
-                                                <div class="stat-label">Fees Paid</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+<!-- Dashboard Header -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h2 mb-1">Orders Dashboard</h1>
+                <p class="text-muted mb-0">Manage all semester notes orders efficiently</p>
+            </div>
+            <div class="d-flex align-items-center">
+                <small class="text-muted">Last updated: {{ now()->format('M d, Y H:i') }}</small>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-success bg-opacity-10 p-3 rounded">
+                                <i class="fas fa-check-circle text-success"></i>
                             </div>
                         </div>
+                        <div class="ms-3">
+                            <h5 class="mb-0">{{ $orders->where('is_completed', true)->count() }}</h5>
+                            <small class="text-muted">Completed Orders</small>
+                        </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-warning bg-opacity-10 p-3 rounded">
+                                <i class="fas fa-clock text-warning"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="mb-0">{{ $orders->where('is_completed', false)->count() }}</h5>
+                            <small class="text-muted">Pending Orders</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded">
+                                <i class="fas fa-list-alt text-primary"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="mb-0">{{ $orders->count() }}</h5>
+                            <small class="text-muted">Total Orders</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0">
+                            <div class="bg-info bg-opacity-10 p-3 rounded">
+                                <i class="fas fa-money-check-alt text-info"></i>
+                            </div>
+                        </div>
+                        <div class="ms-3">
+                            <h5 class="mb-0">{{ $orders->where('fees_paid', true)->count() }}</h5>
+                            <small class="text-muted">Fees Paid</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
                     
-                    <!-- Search and Filter Form -->
-                    <div class="mt-4">
-                        <form method="GET" action="{{ route('admin.dashboard') }}" class="search-filter-form">
-                            <div class="row g-3 align-items-end">
+    <!-- Search and Filter Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <form method="GET" action="{{ route('admin.dashboard') }}">
+                        <div class="row g-3 align-items-end">
                                 <div class="col-12 col-md-6">
                                     <label class="form-label small text-muted mb-1">Search Orders</label>
                                     <div class="input-group">
@@ -114,10 +136,17 @@
                                         </a>
                                     </div>
                                 </div>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Table Section -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
                 <div class="card-body p-3 p-md-4">
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show">
@@ -146,8 +175,7 @@
                     @endif
 
                     @if($orders->count() > 0)
-                        <form action="{{ route('admin.mark-completed') }}" method="POST" id="bulkActionForm">
-                            @csrf
+                        <div id="bulkActionForm">
                             <div class="bulk-actions-section mb-4">
                                 <div class="row g-3 align-items-center">
                                     <div class="col-12 col-lg-3 col-md-4">
@@ -181,11 +209,6 @@
                                             </div>
                                             <div class="col-12 col-xl-6">
                                                 <div class="d-flex gap-2 w-100">
-                                                    <button type="submit" class="btn btn-success btn-sm flex-fill" id="markCompletedBtn" disabled>
-                                                        <i class="fas fa-check me-1"></i>
-                                                        <span class="d-none d-md-inline">Complete</span>
-                                                        (<span id="selectedCount">0</span>)
-                                                    </button>
                                                     <button type="button" class="btn btn-primary btn-sm flex-fill" id="printInvoicesBtn" disabled>
                                                         <i class="fas fa-print me-1"></i>
                                                         <span class="d-none d-md-inline">Print</span>
@@ -220,18 +243,17 @@
                                             <th class="d-none d-lg-table-cell">Fees</th>
                                             <th>Status</th>
                                             <th class="d-none d-md-table-cell">Date</th>
+                                            <th width="80">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($orders as $order)
                                             <tr class="{{ $order->is_completed ? 'table-success' : '' }}">
                                                 <td class="text-center">
-                                                    @if(!$order->is_completed)
-                                                        <input type="checkbox" 
-                                                               name="order_ids[]" 
-                                                               value="{{ $order->id }}" 
-                                                               class="order-checkbox form-check-input">
-                                                    @endif
+                                                    <input type="checkbox" 
+                                                           name="order_ids[]" 
+                                                           value="{{ $order->id }}" 
+                                                           class="order-checkbox form-check-input">
                                                 </td>
                                                 <td class="text-nowrap">
                                                     <strong class="text-primary">#{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</strong>
@@ -337,6 +359,15 @@
                                                 <td class="d-none d-md-table-cell">
                                                     <small class="text-muted">{{ $order->created_at->format('M j, Y') }}<br>{{ $order->created_at->format('g:i A') }}</small>
                                                 </td>
+                                                <td>
+                                                    <button type="button" 
+                                                            class="btn btn-outline-primary btn-sm" 
+                                                            data-bs-toggle="modal" 
+                                                            data-bs-target="#editOrderModal{{ $order->id }}"
+                                                            title="Edit Order">
+                                                        <i class="fas fa-edit"></i>
+                                                    </button>
+                                                </td>
                                             </tr>
 
                                             @if($order->remarks && strlen($order->remarks) > 50)
@@ -358,11 +389,96 @@
                                                     </div>
                                                 </div>
                                             @endif
+
+                                            <!-- Edit Order Modal -->
+                                            <div class="modal fade" id="editOrderModal{{ $order->id }}" tabindex="-1">
+                                                <div class="modal-dialog modal-lg">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title">Edit Order #{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                        </div>
+                                                        <form id="editOrderForm{{ $order->id }}" method="POST" action="{{ route('admin.update-order', $order->id) }}">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <div class="modal-body">
+                                                                <div class="row g-3">
+                                                                    <!-- Customer Information -->
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Customer Name</label>
+                                                                        <input type="text" class="form-control" name="name" value="{{ $order->name }}" required>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Email</label>
+                                                                        <input type="email" class="form-control" name="email" value="{{ $order->email }}">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Phone Number</label>
+                                                                        <input type="text" class="form-control" name="phone_number" value="{{ $order->phone_number }}" required>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Secondary Phone</label>
+                                                                        <input type="text" class="form-control" name="secondary_phone_number" value="{{ $order->secondary_phone_number }}">
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <label class="form-label">Full Address</label>
+                                                                        <textarea class="form-control" name="full_address" rows="2" required>{{ $order->full_address }}</textarea>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">City</label>
+                                                                        <input type="text" class="form-control" name="city" value="{{ $order->city }}" required>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Country</label>
+                                                                        <input type="text" class="form-control" name="country" value="{{ $order->country }}" required>
+                                                                    </div>
+                                                                    
+                                                                    <!-- Order Details -->
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Status</label>
+                                                                        <select class="form-select" name="status" required>
+                                                                            @foreach(\App\Models\Order::getStatusOptions() as $value => $label)
+                                                                                <option value="{{ $value }}" {{ $order->status === $value ? 'selected' : '' }}>{{ $label }}</option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Tracking ID</label>
+                                                                        <input type="text" class="form-control" name="tracking_id" value="{{ $order->tracking_id }}">
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Semesters (comma separated)</label>
+                                                                        <input type="text" class="form-control" name="semesters" value="{{ implode(', ', $order->semesters) }}" required>
+                                                                        <small class="form-text text-muted">e.g., 1st, 2nd, 3rd</small>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <label class="form-label">Fees Status</label>
+                                                                        <select class="form-select" name="fees_paid">
+                                                                            <option value="0" {{ !$order->fees_paid ? 'selected' : '' }}>Not Paid</option>
+                                                                            <option value="1" {{ $order->fees_paid ? 'selected' : '' }}>Paid</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-12">
+                                                                        <label class="form-label">Remarks</label>
+                                                                        <textarea class="form-control" name="remarks" rows="3">{{ $order->remarks }}</textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                <button type="submit" class="btn btn-primary">
+                                                                    <i class="fas fa-save me-1"></i>Update Order
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                        </form>
+                        </div>
                     @else
                         <div class="text-center py-5">
                             <i class="fas fa-{{ $searchTerm || $statusFilter ? 'search' : 'inbox' }} fa-3x text-muted mb-3"></i>
@@ -380,512 +496,188 @@
             </div>
         </div>
     </div>
-</div>
 @endsection
 
 @section('styles')
 <style>
-    /* Enhanced Card Design */
-    .card {
-        border-radius: 16px;
-        border: none;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    }
-    
-    .card-header {
-        border-radius: 16px 16px 0 0;
-        padding: 2rem 2.5rem;
-        background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .card-header::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 4px;
-        background: linear-gradient(90deg, #0d6efd 0%, #6610f2 50%, #20c997 100%);
-    }
-    
-    /* Dashboard Header Styling */
-    .dashboard-header {
-        position: relative;
-        z-index: 1;
-    }
-    
-    .header-content {
-        padding: 0.5rem 0;
-    }
-    
-    .header-icon {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 1rem;
-        box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
-    }
-    
-    .header-icon i {
-        font-size: 1.5rem;
-        color: white;
-    }
-    
-    .dashboard-title {
-        font-size: 2rem;
-        font-weight: 700;
-        color: #212529;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-        margin: 0;
-    }
-    
-    .dashboard-subtitle {
-        font-size: 1rem;
-        color: #6c757d;
-        font-weight: 500;
-        margin-top: 0.5rem;
-    }
-    
-    /* Stats Cards */
-    .stats-section {
-        padding: 0.5rem 0;
-    }
-    
-    .stat-card {
-        background: white;
-        border-radius: 12px;
-        padding: 1rem 1.25rem;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e9ecef;
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        transition: all 0.3s ease;
-        min-width: 120px;
-    }
-    
-    .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
-    }
-    
-    .stat-card.completed {
-        border-left: 4px solid #198754;
-    }
-    
-    .stat-card.completed .stat-icon {
-        background: linear-gradient(135deg, #198754 0%, #20c997 100%);
-    }
-    
-    .stat-card.pending {
-        border-left: 4px solid #ffc107;
-    }
-    
-    .stat-card.pending .stat-icon {
-        background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
-    }
-    
-    .stat-card.total {
-        border-left: 4px solid #0d6efd;
-    }
-    
-    .stat-card.total .stat-icon {
-        background: linear-gradient(135deg, #0d6efd 0%, #6610f2 100%);
-    }
-    
-    .stat-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-    
-    .stat-icon i {
-        font-size: 1rem;
-        color: white;
-    }
-    
-    .stat-content {
-        flex: 1;
-    }
-    
-    .stat-number {
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: #212529;
-        line-height: 1;
-    }
-    
-    .stat-label {
-        font-size: 0.75rem;
-        color: #6c757d;
-        font-weight: 500;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        margin-top: 0.25rem;
-    }
-    
-    /* Search Filter Form Styling */
-    .search-filter-form {
-        background: #f8f9fa;
-        padding: 1.5rem;
-        border-radius: 12px;
-        border: 1px solid #e9ecef;
-    }
-    
-    .search-filter-form .input-group-text {
-        background: transparent;
-        border-color: #dee2e6;
-    }
-    
-    .search-filter-form .form-control,
-    .search-filter-form .form-select {
-        border-color: #dee2e6;
-        border-radius: 8px;
-        padding: 0.625rem 0.875rem;
-        font-size: 0.9rem;
-    }
-    
-    .search-filter-form .form-control:focus,
-    .search-filter-form .form-select:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.1);
-    }
-    
-    /* Bulk Actions Section */
-    .bulk-actions-section {
-        background: #f8f9fa;
-        padding: 1.25rem;
-        border-radius: 12px;
-        border: 1px solid #e9ecef;
-    }
-    
-    .bulk-actions-section .btn {
-        border-radius: 8px;
-        font-weight: 500;
-        padding: 0.5rem 1rem;
-        font-size: 0.875rem;
-    }
-    
-    .bulk-actions-section .form-select {
-        border-radius: 8px;
-        font-size: 0.875rem;
-    }
-    
-    /* Table Improvements */
-    .table-sm td {
-        padding: 0.75rem 0.5rem;
-        vertical-align: middle;
-        border-color: #f1f3f4;
-    }
-    
-    .table-sm th {
-        padding: 0.875rem 0.5rem;
-        font-weight: 600;
-        font-size: 0.85rem;
-        background: #f8f9fa;
-        border-color: #f1f3f4;
-        color: #495057;
-    }
-    
-    .table-hover tbody tr:hover {
+    /* Clean Dashboard Styles */
+    body {
         background-color: #f8f9fa;
     }
     
-    /* Badge Styling */
-    .badge-sm {
-        font-size: 0.65rem;
-        padding: 0.25rem 0.5rem;
+    .card {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        background: white;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    /* Statistics Cards */
+    .bg-success.bg-opacity-10 {
+        background-color: rgba(25, 135, 84, 0.1) !important;
+    }
+    
+    .bg-warning.bg-opacity-10 {
+        background-color: rgba(255, 193, 7, 0.1) !important;
+    }
+    
+    .bg-primary.bg-opacity-10 {
+        background-color: rgba(13, 110, 253, 0.1) !important;
+    }
+    
+    .bg-info.bg-opacity-10 {
+        background-color: rgba(13, 202, 240, 0.1) !important;
+    }
+    
+    /* Form Elements */
+    .form-control, .form-select {
+        border: 1px solid #ced4da;
+        border-radius: 6px;
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+    
+    .input-group-text {
+        border: 1px solid #ced4da;
+        background-color: #f8f9fa;
+    }
+    
+    /* Buttons */
+    .btn {
         border-radius: 6px;
         font-weight: 500;
     }
     
+    /* Table */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+    
+    .table th {
+        background-color: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+        color: #495057;
+        padding: 0.75rem;
+    }
+    
+    .table td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #dee2e6;
+        vertical-align: middle;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+    
+    /* Status Badges */
     .badge {
         font-weight: 500;
+        border-radius: 4px;
+    }
+    
+    /* Pagination */
+    .pagination {
+        margin-bottom: 0;
+    }
+    
+    .pagination .page-link {
+        border: 1px solid #dee2e6;
+        color: #495057;
         border-radius: 6px;
+        margin: 0 2px;
     }
     
-    /* Button Improvements */
-    .btn {
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.2s ease;
+    .pagination .page-link:hover {
+        background-color: #e9ecef;
+        border-color: #adb5bd;
     }
     
-    .btn:hover {
-        transform: translateY(-1px);
+    .pagination .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
     }
     
-    .btn-group .btn {
-        border-radius: 8px;
-    }
-    
-    .btn-group .btn:not(:last-child) {
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-    }
-    
-    .btn-group .btn:not(:first-child) {
-        border-top-left-radius: 0;
-        border-bottom-left-radius: 0;
-    }
-    
-    /* Alert Improvements */
+    /* Alert Messages */
     .alert {
-        border-radius: 12px;
         border: none;
-        padding: 1rem 1.25rem;
+        border-radius: 6px;
+        border-left: 4px solid;
+    }
+    
+    .alert-success {
+        border-left-color: #198754;
+        background-color: #d1e7dd;
+        color: #0a3622;
+    }
+    
+    .alert-danger {
+        border-left-color: #dc3545;
+        background-color: #f8d7da;
+        color: #58151c;
+    }
+    
+    /* Modal */
+    .modal-content {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal-header {
+        border-bottom: 1px solid #dee2e6;
+        background-color: #f8f9fa;
+        border-radius: 8px 8px 0 0;
+    }
+    
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+        background-color: #f8f9fa;
+        border-radius: 0 0 8px 8px;
     }
     
     /* Responsive Design */
-    @media (max-width: 992px) {
-        .card-header {
-            padding: 1.5rem 1.75rem;
-        }
-        
-        .header-icon {
-            width: 50px;
-            height: 50px;
-            margin-right: 0.75rem;
-        }
-        
-        .header-icon i {
-            font-size: 1.25rem;
-        }
-        
-        .dashboard-title {
-            font-size: 1.75rem;
-        }
-        
-        .dashboard-subtitle {
-            font-size: 0.9rem;
-        }
-        
-        .stat-card {
-            padding: 0.875rem 1rem;
-            min-width: 110px;
-        }
-        
-        .stat-number {
-            font-size: 1.375rem;
-        }
-        
-        .search-filter-form {
-            padding: 1.25rem;
-        }
-        
-        .bulk-actions-section {
-            padding: 1rem;
-        }
-        
-        .bulk-actions-section .btn {
-            padding: 0.375rem 0.75rem;
-            font-size: 0.8rem;
-        }
-    }
-    
     @media (max-width: 768px) {
-        .card-header {
-            padding: 1.25rem 1.5rem;
-        }
-        
-        .header-icon {
-            width: 45px;
-            height: 45px;
-            margin-right: 0.625rem;
-        }
-        
-        .header-icon i {
-            font-size: 1.125rem;
-        }
-        
-        .dashboard-title {
-            font-size: 1.5rem;
-        }
-        
-        .dashboard-subtitle {
-            font-size: 0.875rem;
-        }
-        
-        .stats-section .d-flex {
-            justify-content: center !important;
-        }
-        
-        .stat-card {
-            padding: 0.75rem 0.875rem;
-            min-width: 100px;
-            gap: 0.5rem;
-        }
-        
-        .stat-icon {
-            width: 35px;
-            height: 35px;
-        }
-        
-        .stat-icon i {
-            font-size: 0.875rem;
-        }
-        
-        .stat-number {
-            font-size: 1.25rem;
-        }
-        
-        .stat-label {
-            font-size: 0.7rem;
+        .container-fluid {
+            padding: 1rem;
         }
         
         .card-body {
-            padding: 1.25rem !important;
-        }
-        
-        .search-filter-form {
             padding: 1rem;
         }
         
-        .bulk-actions-section {
-            padding: 0.875rem;
+        .table-responsive {
+            font-size: 0.875rem;
         }
         
-        .table-sm td {
-            padding: 0.5rem 0.375rem;
-            font-size: 0.85rem;
-        }
-        
-        .table-sm th {
-            padding: 0.625rem 0.375rem;
-            font-size: 0.8rem;
-        }
-        
-        .badge {
-            font-size: 0.7rem;
-            padding: 0.2rem 0.4rem;
-        }
-        
-        .btn-group .btn {
-            padding: 0.375rem 0.625rem;
-            font-size: 0.8rem;
+        .btn-group-vertical .btn {
+            margin-bottom: 0.25rem;
         }
     }
     
     @media (max-width: 576px) {
-        .card-header {
-            padding: 1rem 1.25rem;
-        }
-        
-        .header-content .d-flex {
-            flex-direction: column;
-            align-items: center !important;
-            text-align: center;
-        }
-        
-        .header-icon {
-            width: 50px;
-            height: 50px;
-            margin-right: 0;
-            margin-bottom: 0.75rem;
-        }
-        
-        .dashboard-title {
-            font-size: 1.375rem;
-        }
-        
-        .dashboard-subtitle {
-            font-size: 0.8rem;
-            text-align: center;
-        }
-        
-        .stats-section {
-            margin-top: 1rem;
-        }
-        
-        .stat-card {
-            flex-direction: column;
-            text-align: center;
-            padding: 0.75rem;
-            min-width: 90px;
-            gap: 0.375rem;
-        }
-        
-        .stat-icon {
-            width: 32px;
-            height: 32px;
-            margin: 0 auto 0.25rem;
-        }
-        
-        .stat-number {
-            font-size: 1.125rem;
-        }
-        
-        .stat-label {
-            font-size: 0.65rem;
+        .h2 {
+            font-size: 1.5rem;
         }
         
         .card-body {
-            padding: 1rem !important;
-        }
-        
-        .search-filter-form {
-            padding: 0.875rem;
-        }
-        
-        .bulk-actions-section {
             padding: 0.75rem;
         }
         
-        .card-header .row {
-            text-align: center;
-        }
-        
-        .card-header .col-md-6:first-child {
-            margin-bottom: 1rem;
-        }
-        
-        .table-responsive {
-            border: none;
-            margin: -0.5rem;
-        }
-        
-        .form-control, .form-select {
+        .table th,
+        .table td {
+            padding: 0.5rem;
             font-size: 0.875rem;
-            padding: 0.5rem 0.75rem;
-        }
-        
-        .btn {
-            font-size: 0.8rem;
-            padding: 0.375rem 0.625rem;
-        }
-        
-        .bulk-actions-section .btn {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-        }
-        
-        .bulk-actions-section .form-select {
-            font-size: 0.8rem;
-        }
-    }
-    
-    @media (max-width: 480px) {
-        .search-filter-form .row > div {
-            margin-bottom: 0.5rem;
-        }
-        
-        .bulk-actions-section .d-flex {
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        
-        .bulk-actions-section .d-flex.gap-2 {
-            flex-direction: row;
         }
     }
 </style>
@@ -895,42 +687,32 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const orderCheckboxes = document.querySelectorAll('.order-checkbox');
-        const markCompletedBtn = document.getElementById('markCompletedBtn');
-        const selectedCount = document.getElementById('selectedCount');
         const selectAllBtn = document.getElementById('selectAll');
         const deselectAllBtn = document.getElementById('deselectAll');
-        const bulkActionForm = document.getElementById('bulkActionForm');
 
         function updateSelectedCount() {
             const checkedBoxes = document.querySelectorAll('.order-checkbox:checked');
             const count = checkedBoxes.length;
-            selectedCount.textContent = count;
-            markCompletedBtn.disabled = count === 0;
             
             // Update print button
             const printCount = document.getElementById('printCount');
             const printInvoicesBtn = document.getElementById('printInvoicesBtn');
-            printCount.textContent = count;
-            printInvoicesBtn.disabled = count === 0;
+            if (printCount) printCount.textContent = count;
+            if (printInvoicesBtn) printInvoicesBtn.disabled = count === 0;
             
             // Update delete button
             const deleteCount = document.getElementById('deleteCount');
             const deleteOrdersBtn = document.getElementById('deleteOrdersBtn');
-            deleteCount.textContent = count;
-            deleteOrdersBtn.disabled = count === 0;
+            if (deleteCount) deleteCount.textContent = count;
+            if (deleteOrdersBtn) deleteOrdersBtn.disabled = count === 0;
             
             // Update status controls
             const statusCount = document.getElementById('statusCount');
             const statusSelect = document.getElementById('statusSelect');
             const updateStatusBtn = document.getElementById('updateStatusBtn');
-            statusCount.textContent = count;
-            statusSelect.disabled = count === 0;
-            updateStatusBtn.disabled = count === 0 || statusSelect.value === '';
-            
-            if (count > 0) {
-                markCompletedBtn.classList.remove('btn-success');
-                markCompletedBtn.classList.add('btn-success');
-            }
+            if (statusCount) statusCount.textContent = count;
+            if (statusSelect) statusSelect.disabled = count === 0;
+            if (updateStatusBtn) updateStatusBtn.disabled = count === 0 || (statusSelect && statusSelect.value === '');
         }
 
 
@@ -1109,19 +891,62 @@
             document.body.removeChild(deleteForm);
         });
 
-        // Form submission confirmation
-        bulkActionForm.addEventListener('submit', function(e) {
-            const checkedBoxes = document.querySelectorAll('.order-checkbox:checked');
-            if (checkedBoxes.length === 0) {
-                e.preventDefault();
-                alert('Please select at least one order to mark as completed.');
-                return;
-            }
 
-            const confirmMessage = `Are you sure you want to mark ${checkedBoxes.length} order(s) as completed?`;
-            if (!confirm(confirmMessage)) {
-                e.preventDefault();
-            }
+
+        // Edit Order Modal Enhancement
+        document.querySelectorAll('[data-bs-target^="#editOrderModal"]').forEach(button => {
+            button.addEventListener('click', function() {
+                const modalId = this.getAttribute('data-bs-target');
+                const modal = document.querySelector(modalId);
+                const form = modal.querySelector('form');
+                
+                // Reset any previous validation states
+                form.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+                form.querySelectorAll('.invalid-feedback').forEach(el => el.remove());
+            });
+        });
+
+        // Handle edit form submissions with validation
+        document.querySelectorAll('form[id^="editOrderForm"]').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalText = submitBtn.innerHTML;
+                
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i>Updating...';
+                submitBtn.disabled = true;
+                
+                // Basic client-side validation
+                let isValid = true;
+                const requiredFields = this.querySelectorAll('[required]');
+                
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        field.classList.add('is-invalid');
+                        if (!field.nextElementSibling?.classList.contains('invalid-feedback')) {
+                            const feedback = document.createElement('div');
+                            feedback.className = 'invalid-feedback';
+                            feedback.textContent = 'This field is required.';
+                            field.parentNode.appendChild(feedback);
+                        }
+                        isValid = false;
+                    } else {
+                        field.classList.remove('is-invalid');
+                        const feedback = field.parentNode.querySelector('.invalid-feedback');
+                        if (feedback) feedback.remove();
+                    }
+                });
+                
+                if (!isValid) {
+                    e.preventDefault();
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                    return;
+                }
+                
+                // If validation passes, form will submit normally
+                // Reset button state will happen on page reload
+            });
         });
 
         // Initial update

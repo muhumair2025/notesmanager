@@ -22,7 +22,7 @@ class UserController extends Controller
             'city' => 'required|string|max:255',
             'country' => 'required|string|max:255',
             'semesters' => 'required|array|min:1',
-            'semesters.*' => 'in:Semester 1,Semester 2,Semester 3,Semester 4,Semester 5,Semester 6,Semester 7',
+            'semesters.*' => 'in:sem 1 notes,sem 2 notes,sem 3 notes,sem 4 notes,sem 5 notes,sem 6 notes,sem 7 notes',
             'remarks' => 'nullable|string',
             'fees_paid' => 'required|in:0,1'
         ]);

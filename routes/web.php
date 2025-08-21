@@ -25,5 +25,6 @@ Route::middleware(['App\Http\Middleware\AdminAuth'])->group(function () {
     Route::post('/admin/update-status', [AdminController::class, 'updateStatus'])->name('admin.update-status');
     Route::post('/admin/update-tracking-ids', [AdminController::class, 'updateTrackingIds'])->name('admin.update-tracking-ids');
     Route::post('/admin/print-invoices', [AdminController::class, 'printInvoices'])->name('admin.print-invoices');
+    Route::put('/admin/orders/{order}', [AdminController::class, 'updateOrder'])->name('admin.update-order');
     Route::delete('/admin/delete-orders', [AdminController::class, 'deleteOrders'])->name('admin.delete-orders');
 });
