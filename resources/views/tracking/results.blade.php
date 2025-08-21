@@ -193,6 +193,9 @@
                         <a href="{{ route('user.order-form') }}" class="btn btn-outline-success btn-mobile">
                             <i class="fas fa-plus me-1"></i>New Order
                         </a>
+                        <a href="{{ route('user.order-history', $request->phone_number) }}" class="btn btn-outline-info btn-mobile">
+                            <i class="fas fa-history me-1"></i>Order History
+                        </a>
                     </div>
                 </div>
             </div>
@@ -335,6 +338,9 @@
                             </a>
                             <a href="{{ route('user.order-form') }}" class="btn btn-outline-success">
                                 <i class="fas fa-plus me-1"></i>Place New Order
+                            </a>
+                            <a href="{{ route('user.order-history', $request->phone_number) }}" class="btn btn-outline-info">
+                                <i class="fas fa-history me-1"></i>Order History
                             </a>
                         </div>
                     </div>

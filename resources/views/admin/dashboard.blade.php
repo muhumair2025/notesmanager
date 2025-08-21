@@ -2,6 +2,39 @@
 
 @section('title', 'Admin Dashboard')
 
+@section('styles')
+<style>
+    /* Force minimal table header styling */
+    .table thead,
+    .table thead tr,
+    .table thead th {
+        background-color: white !important;
+        background-image: none !important;
+        background: white !important;
+        color: #666 !important;
+        font-weight: normal !important;
+        border: none !important;
+        border-bottom: 1px solid #e5e5e5 !important;
+    }
+    
+    /* Override any gradient backgrounds */
+    .table thead * {
+        background: white !important;
+        background-image: none !important;
+        background-color: white !important;
+    }
+    
+    /* Ensure no Bootstrap table styling interferes */
+    .table.table-sm thead,
+    .table.table-sm thead tr,
+    .table.table-sm thead th {
+        background: white !important;
+        background-image: none !important;
+        background-color: white !important;
+    }
+</style>
+@endsection
+
 @section('content')
 <!-- Dashboard Header -->
 <div class="row mb-4">
@@ -227,28 +260,28 @@
                             </div>
 
                             <div class="table-responsive">
-                                <table class="table table-hover table-sm">
-                                    <thead class="table-light">
-                                        <tr>
-                                            <th width="40" class="text-center">
-                                                <i class="fas fa-check-square text-muted"></i>
+                                <table class="table table-sm" style="border: none;">
+                                    <thead style="background-color: white !important; border-bottom: 1px solid #e5e5e5;">
+                                        <tr style="background-color: white !important;">
+                                            <th width="40" class="text-center" style="background-color: white !important; color: #888; font-weight: normal; border: none; padding: 8px 4px; font-size: 0.85rem;">
+                                                <i class="fas fa-check-square"></i>
                                             </th>
-                                            <th class="text-nowrap">Order ID</th>
-                                            <th class="d-none d-md-table-cell">Customer</th>
-                                            <th class="d-table-cell d-md-none">Info</th>
-                                            <th class="d-none d-lg-table-cell">Contact</th>
-                                            <th class="d-none d-xl-table-cell">Address</th>
-                                            <th class="d-none d-lg-table-cell">Semesters</th>
-                                            <th class="d-none d-xl-table-cell">Remarks</th>
-                                            <th class="d-none d-lg-table-cell">Fees</th>
-                                            <th>Status</th>
-                                            <th class="d-none d-md-table-cell">Date</th>
-                                            <th width="80">Actions</th>
+                                            <th class="text-nowrap" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Order ID</th>
+                                            <th class="d-none d-md-table-cell" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Customer</th>
+                                            <th class="d-table-cell d-md-none" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Info</th>
+                                            <th class="d-none d-lg-table-cell" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Contact</th>
+                                            <th class="d-none d-xl-table-cell" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Address</th>
+                                            <th class="d-none d-lg-table-cell" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Semesters</th>
+                                            <th class="d-none d-xl-table-cell" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Remarks</th>
+                                            <th class="d-none d-lg-table-cell" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Fees</th>
+                                            <th style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Status</th>
+                                            <th class="d-none d-md-table-cell" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Date</th>
+                                            <th width="80" style="background-color: white !important; color: #666; font-weight: normal; border: none; padding: 8px 8px; font-size: 0.85rem;">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach($orders as $order)
-                                            <tr class="{{ $order->is_completed ? 'table-success' : '' }}">
+                                            <tr style="border-bottom: 1px solid #f1f3f4;" onmouseover="this.style.backgroundColor='#fafafa'" onmouseout="this.style.backgroundColor='transparent'">
                                                 <td class="text-center">
                                                     <input type="checkbox" 
                                                            name="order_ids[]" 
@@ -314,7 +347,15 @@
                                                 <td class="d-none d-xl-table-cell">
                                                     @if($order->remarks)
                                                         <div style="max-width: 150px;">
-                                                            <small class="text-dark">{{ Str::limit($order->remarks, 30) }}</small>
+                                                            @if($order->status === 'cancelled' && str_contains($order->remarks, 'Cancelled by customer'))
+                                                                <small class="text-danger fw-bold">
+                                                                    <i class="fas fa-ban me-1"></i>
+                                                                    <span class="text-decoration-underline">CANCELLED:</span> 
+                                                                    {{ Str::limit(str_replace(['Cancelled by customer. Reason: ', 'Cancelled by customer'], '', $order->remarks), 25) }}
+                                                                </small>
+                                                            @else
+                                                                <small class="text-muted">{{ Str::limit($order->remarks, 30) }}</small>
+                                                            @endif
                                                             @if(strlen($order->remarks) > 30)
                                                                 <button type="button" 
                                                                         class="btn btn-link btn-sm p-0 text-decoration-none text-primary" 
@@ -370,16 +411,27 @@
                                                 </td>
                                             </tr>
 
-                                            @if($order->remarks && strlen($order->remarks) > 50)
+                                            @if($order->remarks && strlen($order->remarks) > 30)
                                                 <!-- Remarks Modal -->
                                                 <div class="modal fade" id="remarksModal{{ $order->id }}" tabindex="-1">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title">Remarks for Order #{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}</h5>
+                                                                <h5 class="modal-title">
+                                                                    @if($order->status === 'cancelled')
+                                                                        <i class="fas fa-times-circle text-danger me-2"></i>
+                                                                    @endif
+                                                                    Remarks for Order #{{ str_pad($order->id, 4, '0', STR_PAD_LEFT) }}
+                                                                </h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                                             </div>
                                                             <div class="modal-body">
+                                                                @if($order->status === 'cancelled' && str_contains($order->remarks, 'Cancelled by customer'))
+                                                                    <div class="alert alert-danger">
+                                                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                                                        <strong>This order was cancelled by the customer.</strong>
+                                                                    </div>
+                                                                @endif
                                                                 <p>{{ $order->remarks }}</p>
                                                             </div>
                                                             <div class="modal-footer">

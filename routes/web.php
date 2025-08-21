@@ -7,11 +7,16 @@ use Illuminate\Support\Facades\Route;
 
 // Landing page (tracking page)
 Route::get('/', [TrackingController::class, 'index'])->name('tracking.index');
+Route::get('/track', function() {
+    return redirect()->route('tracking.index');
+});
 Route::post('/track', [TrackingController::class, 'track'])->name('tracking.track');
 
 // User routes
 Route::get('/order', [UserController::class, 'index'])->name('user.order-form');
 Route::post('/order', [UserController::class, 'store'])->name('user.store');
+Route::get('/my-orders/{phone}', [UserController::class, 'orderHistory'])->name('user.order-history');
+Route::post('/order/{id}/cancel', [UserController::class, 'cancelOrder'])->name('user.cancel-order');
 
 // Admin routes
 Route::get('/admin/login', [AdminController::class, 'showLogin'])->name('admin.login');

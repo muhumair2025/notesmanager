@@ -177,9 +177,14 @@
                                 <br>
                                 <small class="text-muted">Save this ID for tracking your order</small>
                                 <div class="mt-2">
-                                    <a href="{{ route('tracking.index') }}" class="btn btn-success btn-sm">
+                                    <a href="{{ route('tracking.index') }}" class="btn btn-success btn-sm me-2">
                                         <i class="fas fa-search me-2"></i>Track Your Order
                                     </a>
+                                    @if(old('phone_number'))
+                                        <a href="{{ route('user.order-history', old('phone_number')) }}" class="btn btn-outline-success btn-sm">
+                                            <i class="fas fa-history me-1"></i>My Orders
+                                        </a>
+                                    @endif
                                 </div>
                             </div>
                         @endif
@@ -189,12 +194,17 @@
                 @if($errors->any())
                     <div class="alert alert-danger">
                         <i class="fas fa-exclamation-circle me-2"></i>
-                        <strong>Please fix the following:</strong>
-                        <ul class="mb-0 mt-2 ps-3">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
+                        @if($errors->has('rate_limit'))
+                            <strong>Rate Limit Exceeded:</strong>
+                            <div class="mt-2">{{ $errors->first('rate_limit') }}</div>
+                        @else
+                            <strong>Please fix the following:</strong>
+                            <ul class="mb-0 mt-2 ps-3">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
                 @endif
 
@@ -427,6 +437,131 @@
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('orderForm');
             const submitBtn = document.getElementById('submitBtn');
+            const STORAGE_KEY = 'notesOrderForm_autoSave';
+            
+            // Form Auto-save functionality
+            const formInputs = form.querySelectorAll('input, textarea, select');
+            let autoSaveTimeout;
+            
+            // Load saved data on page load
+            loadSavedData();
+            
+            // Add auto-save listeners to all form inputs
+            formInputs.forEach(input => {
+                input.addEventListener('input', debounceAutoSave);
+                input.addEventListener('change', debounceAutoSave);
+            });
+            
+            function debounceAutoSave() {
+                clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(saveFormData, 1000); // Save after 1 second of inactivity
+            }
+            
+            function saveFormData() {
+                try {
+                    const formData = new FormData(form);
+                    const data = {};
+                    
+                    // Save regular inputs
+                    for (let [key, value] of formData.entries()) {
+                        if (key === 'semesters[]') {
+                            if (!data.semesters) data.semesters = [];
+                            data.semesters.push(value);
+                        } else if (key !== '_token') { // Don't save CSRF token
+                            data[key] = value;
+                        }
+                    }
+                    
+                    // Save radio button states
+                    const feesPaidRadio = form.querySelector('input[name="fees_paid"]:checked');
+                    if (feesPaidRadio) {
+                        data.fees_paid = feesPaidRadio.value;
+                    }
+                    
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                    
+                    // Show auto-save indicator
+                    showAutoSaveIndicator();
+                } catch (error) {
+                    console.warn('Auto-save failed:', error);
+                }
+            }
+            
+            function loadSavedData() {
+                try {
+                    const savedData = localStorage.getItem(STORAGE_KEY);
+                    if (!savedData) return;
+                    
+                    const data = JSON.parse(savedData);
+                    
+                    // Load regular inputs
+                    Object.keys(data).forEach(key => {
+                        if (key === 'semesters') {
+                            // Load semester checkboxes
+                            data.semesters.forEach(semester => {
+                                const checkbox = form.querySelector(`input[name="semesters[]"][value="${semester}"]`);
+                                if (checkbox) checkbox.checked = true;
+                            });
+                        } else if (key === 'fees_paid') {
+                            // Load radio button
+                            const radio = form.querySelector(`input[name="fees_paid"][value="${data[key]}"]`);
+                            if (radio) radio.checked = true;
+                        } else {
+                            // Load other inputs
+                            const input = form.querySelector(`[name="${key}"]`);
+                            if (input) input.value = data[key];
+                        }
+                    });
+                    
+                    // Show restored data indicator
+                    showRestoredDataIndicator();
+                } catch (error) {
+                    console.warn('Failed to load saved data:', error);
+                }
+            }
+            
+            function showAutoSaveIndicator() {
+                // Create or update auto-save indicator
+                let indicator = document.getElementById('autoSaveIndicator');
+                if (!indicator) {
+                    indicator = document.createElement('div');
+                    indicator.id = 'autoSaveIndicator';
+                    indicator.className = 'position-fixed bg-success text-white px-3 py-2 rounded';
+                    indicator.style.cssText = 'top: 20px; right: 20px; z-index: 9999; font-size: 0.8rem; opacity: 0; transition: opacity 0.3s;';
+                    document.body.appendChild(indicator);
+                }
+                
+                indicator.innerHTML = '<i class="fas fa-check me-1"></i>Form auto-saved';
+                indicator.style.opacity = '1';
+                
+                setTimeout(() => {
+                    indicator.style.opacity = '0';
+                }, 2000);
+            }
+            
+            function showRestoredDataIndicator() {
+                const indicator = document.createElement('div');
+                indicator.className = 'alert alert-info alert-dismissible fade show mt-3';
+                indicator.innerHTML = `
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Form data restored!</strong> Your previously entered information has been recovered.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <div class="mt-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="clearSavedData()">
+                            <i class="fas fa-trash me-1"></i>Clear Saved Data
+                        </button>
+                    </div>
+                `;
+                
+                const cardBody = document.querySelector('.card-body');
+                cardBody.insertBefore(indicator, cardBody.firstChild);
+            }
+            
+            // Clear saved data function (global scope for button onclick)
+            window.clearSavedData = function() {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            };
             
             // Form validation and submission
             form.addEventListener('submit', function(e) {
@@ -437,6 +572,9 @@
                     alert('Please select at least one semester.');
                     return;
                 }
+                
+                // Clear saved data on successful submission
+                localStorage.removeItem(STORAGE_KEY);
                 
                 // Show loading state
                 const originalText = submitBtn.innerHTML;

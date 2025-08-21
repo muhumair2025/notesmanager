@@ -134,12 +134,17 @@
             @if($errors->any())
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-circle me-2"></i>
-                    <strong>Please fix the following:</strong>
-                    <ul class="mb-0 mt-2 ps-3">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                    @if($errors->has('rate_limit'))
+                        <strong>Rate Limit Exceeded:</strong>
+                        <div class="mt-2">{{ $errors->first('rate_limit') }}</div>
+                    @else
+                        <strong>Please fix the following:</strong>
+                        <ul class="mb-0 mt-2 ps-3">
+                            @foreach($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    @endif
                 </div>
             @endif
 

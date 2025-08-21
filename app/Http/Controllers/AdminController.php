@@ -222,7 +222,7 @@ class AdminController extends Controller
             'country' => 'required|string|max:255',
             'semesters' => 'required|string',
             'remarks' => 'nullable|string',
-            'status' => 'required|in:pending,printing,packaging,dispatched,completed',
+            'status' => 'required|in:pending,printing,packaging,dispatched,completed,cancelled',
             'tracking_id' => 'nullable|string|max:255',
             'fees_paid' => 'required|boolean'
         ]);

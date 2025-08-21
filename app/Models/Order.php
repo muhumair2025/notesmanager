@@ -11,6 +11,7 @@ class Order extends Model
     const STATUS_PACKAGING = 'packaging';
     const STATUS_DISPATCHED = 'dispatched';
     const STATUS_COMPLETED = 'completed';
+    const STATUS_CANCELLED = 'cancelled';
 
     protected $fillable = [
         'name',
@@ -46,7 +47,8 @@ class Order extends Model
             'printing' => 'badge-info',
             'packaging' => 'badge-primary',
             'dispatched' => 'badge-secondary',
-            'completed' => 'badge-success'
+            'completed' => 'badge-success',
+            'cancelled' => 'badge-danger'
         ];
 
         return $badges[$this->status] ?? 'badge-secondary';
@@ -59,7 +61,8 @@ class Order extends Model
             'printing' => 'Printing',
             'packaging' => 'Packaging',
             'dispatched' => 'Dispatched',
-            'completed' => 'Completed'
+            'completed' => 'Completed',
+            'cancelled' => 'Cancelled'
         ];
 
         return $labels[$this->status] ?? 'Unknown';
@@ -72,7 +75,8 @@ class Order extends Model
             self::STATUS_PRINTING => 'Printing',
             self::STATUS_PACKAGING => 'Packaging',
             self::STATUS_DISPATCHED => 'Dispatched',
-            self::STATUS_COMPLETED => 'Completed'
+            self::STATUS_COMPLETED => 'Completed',
+            self::STATUS_CANCELLED => 'Cancelled'
         ];
     }
 
@@ -83,6 +87,6 @@ class Order extends Model
 
     public function getFeesPaidLabelAttribute()
     {
-        return $this->fees_paid ? 'Paid' : 'Not Paid';
+        return $this->fees_paid ? 'Paid' : 'Pending';
     }
 }
