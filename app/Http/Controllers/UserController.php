@@ -29,7 +29,8 @@ class UserController extends Controller
         }
         
         // Rate limiting by phone number - max 5 orders per phone per day
-        $phoneKey = 'order-phone:' . preg_replace('/[^0-9]/', '', $request->phone_number);
+        $fullPhoneNumber = $request->phone_country_code . $request->phone_number;
+        $phoneKey = 'order-phone:' . preg_replace('/[^0-9]/', '', $fullPhoneNumber);
         
         if (RateLimiter::tooManyAttempts($phoneKey, 5)) {
             $seconds = RateLimiter::availableIn($phoneKey);
@@ -42,7 +43,9 @@ class UserController extends Controller
         
         $request->validate([
             'name' => 'required|string|max:255',
+            'phone_country_code' => 'required|string|max:10',
             'phone_number' => 'required|string|max:20',
+            'secondary_phone_country_code' => 'nullable|string|max:10',
             'secondary_phone_number' => 'nullable|string|max:20',
             'full_address' => 'required|string',
             'city' => 'required|string|max:255',
@@ -53,10 +56,17 @@ class UserController extends Controller
             'fees_paid' => 'required|in:0,1'
         ]);
 
+        // Combine country code with phone number
+        $fullPhoneNumber = $request->phone_country_code . $request->phone_number;
+        $fullSecondaryPhoneNumber = null;
+        if ($request->secondary_phone_number && $request->secondary_phone_country_code) {
+            $fullSecondaryPhoneNumber = $request->secondary_phone_country_code . $request->secondary_phone_number;
+        }
+
         $order = Order::create([
             'name' => $request->name,
-            'phone_number' => $request->phone_number,
-            'secondary_phone_number' => $request->secondary_phone_number,
+            'phone_number' => $fullPhoneNumber,
+            'secondary_phone_number' => $fullSecondaryPhoneNumber,
             'full_address' => $request->full_address,
             'city' => $request->city,
             'country' => $request->country,

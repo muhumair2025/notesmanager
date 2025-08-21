@@ -131,16 +131,64 @@
             }
         }
         
-        @media (max-width: 576px) {
-            .btn-group-mobile {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .btn-group-mobile .btn {
-                width: 100%;
-            }
-        }
+                 @media (max-width: 576px) {
+             .btn-group-mobile {
+                 flex-direction: column;
+                 gap: 0.5rem;
+             }
+             
+             .btn-group-mobile .btn {
+                 width: 100%;
+             }
+         }
+         
+         /* Phone number with country code styles */
+         .phone-input-group {
+             display: flex;
+             align-items: stretch;
+         }
+         
+                   .country-code-select {
+              flex: 0 0 auto;
+              border-top-right-radius: 0;
+              border-bottom-right-radius: 0;
+              border-right: none;
+              min-width: 80px;
+              max-width: 100px;
+          }
+         
+         .phone-number-input {
+             border-top-left-radius: 0;
+             border-bottom-left-radius: 0;
+             flex: 1;
+         }
+         
+         .phone-input-group .form-control:focus {
+             z-index: 1;
+         }
+         
+         .country-code-select:focus {
+             z-index: 2;
+         }
+         
+         @media (max-width: 576px) {
+             .phone-input-group {
+                 flex-direction: column;
+             }
+             
+             .country-code-select {
+                 border-radius: 6px 6px 0 0;
+                 border-right: 1px solid #dee2e6;
+                 border-bottom: none;
+                 min-width: auto;
+             }
+             
+             .phone-number-input {
+                 border-radius: 0 0 6px 6px;
+                 border-top-left-radius: 0;
+                 border-top-right-radius: 0;
+             }
+         }
     </style>
 </head>
 <body>
@@ -229,33 +277,209 @@
                             @enderror
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="phone_number" class="form-label">Phone Number *</label>
-                                <input type="tel" 
-                                       class="form-control @error('phone_number') is-invalid @enderror" 
-                                       id="phone_number" 
-                                       name="phone_number" 
-                                       value="{{ old('phone_number') }}" 
-                                       placeholder="03xxxxxxxxx"
-                                       required>
-                                @error('phone_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                                 <div class="row">
+                             <div class="col-md-6 mb-3">
+                                 <label for="phone_number" class="form-label">Phone Number *</label>
+                                 <div class="phone-input-group">
+                                     <select class="form-select country-code-select @error('phone_country_code') is-invalid @enderror" 
+                                             id="phone_country_code" 
+                                             name="phone_country_code" 
+                                             required>
+                                                                                   <option value="">Code</option>
+                                                                                   <option value="+92" {{ old('phone_country_code') == '+92' ? 'selected' : '' }}>🇵🇰 +92 (Pakistan)</option>
+    <option value="+91" {{ old('phone_country_code') == '+91' ? 'selected' : '' }}>🇮🇳 +91 (India)</option>
+    <option value="+880" {{ old('phone_country_code') == '+880' ? 'selected' : '' }}>🇧🇩 +880 (Bangladesh)</option>
+    <option value="+1" {{ old('phone_country_code') == '+1' ? 'selected' : '' }}>🇺🇸 +1 (USA/Canada)</option>
+    <option value="+44" {{ old('phone_country_code') == '+44' ? 'selected' : '' }}>🇬🇧 +44 (UK)</option>
+    <option value="+971" {{ old('phone_country_code') == '+971' ? 'selected' : '' }}>🇦🇪 +971 (UAE)</option>
+    <option value="+966" {{ old('phone_country_code') == '+966' ? 'selected' : '' }}>🇸🇦 +966 (Saudi Arabia)</option>
+    <option value="+974" {{ old('phone_country_code') == '+974' ? 'selected' : '' }}>🇶🇦 +974 (Qatar)</option>
+    <option value="+973" {{ old('phone_country_code') == '+973' ? 'selected' : '' }}>🇧🇭 +973 (Bahrain)</option>
+    <option value="+965" {{ old('phone_country_code') == '+965' ? 'selected' : '' }}>🇰🇼 +965 (Kuwait)</option>
+    <option value="+968" {{ old('phone_country_code') == '+968' ? 'selected' : '' }}>🇴🇲 +968 (Oman)</option>
+
+    <!-- More countries -->
+    <option value="+93" {{ old('phone_country_code') == '+93' ? 'selected' : '' }}>🇦🇫 +93 (Afghanistan)</option>
+    <option value="+355" {{ old('phone_country_code') == '+355' ? 'selected' : '' }}>🇦🇱 +355 (Albania)</option>
+    <option value="+213" {{ old('phone_country_code') == '+213' ? 'selected' : '' }}>🇩🇿 +213 (Algeria)</option>
+    <option value="+376" {{ old('phone_country_code') == '+376' ? 'selected' : '' }}>🇦🇩 +376 (Andorra)</option>
+    <option value="+244" {{ old('phone_country_code') == '+244' ? 'selected' : '' }}>🇦🇴 +244 (Angola)</option>
+    <option value="+54" {{ old('phone_country_code') == '+54' ? 'selected' : '' }}>🇦🇷 +54 (Argentina)</option>
+    <option value="+374" {{ old('phone_country_code') == '+374' ? 'selected' : '' }}>🇦🇲 +374 (Armenia)</option>
+    <option value="+61" {{ old('phone_country_code') == '+61' ? 'selected' : '' }}>🇦🇺 +61 (Australia)</option>
+    <option value="+43" {{ old('phone_country_code') == '+43' ? 'selected' : '' }}>🇦🇹 +43 (Austria)</option>
+    <option value="+994" {{ old('phone_country_code') == '+994' ? 'selected' : '' }}>🇦🇿 +994 (Azerbaijan)</option>
+    <option value="+32" {{ old('phone_country_code') == '+32' ? 'selected' : '' }}>🇧🇪 +32 (Belgium)</option>
+    <option value="+229" {{ old('phone_country_code') == '+229' ? 'selected' : '' }}>🇧🇯 +229 (Benin)</option>
+    <option value="+975" {{ old('phone_country_code') == '+975' ? 'selected' : '' }}>🇧🇹 +975 (Bhutan)</option>
+    <option value="+55" {{ old('phone_country_code') == '+55' ? 'selected' : '' }}>🇧🇷 +55 (Brazil)</option>
+    <option value="+359" {{ old('phone_country_code') == '+359' ? 'selected' : '' }}>🇧🇬 +359 (Bulgaria)</option>
+    <option value="+855" {{ old('phone_country_code') == '+855' ? 'selected' : '' }}>🇰🇭 +855 (Cambodia)</option>
+    <option value="+237" {{ old('phone_country_code') == '+237' ? 'selected' : '' }}>🇨🇲 +237 (Cameroon)</option>
+    <option value="+86" {{ old('phone_country_code') == '+86' ? 'selected' : '' }}>🇨🇳 +86 (China)</option>
+    <option value="+57" {{ old('phone_country_code') == '+57' ? 'selected' : '' }}>🇨🇴 +57 (Colombia)</option>
+    <option value="+506" {{ old('phone_country_code') == '+506' ? 'selected' : '' }}>🇨🇷 +506 (Costa Rica)</option>
+    <option value="+385" {{ old('phone_country_code') == '+385' ? 'selected' : '' }}>🇭🇷 +385 (Croatia)</option>
+    <option value="+420" {{ old('phone_country_code') == '+420' ? 'selected' : '' }}>🇨🇿 +420 (Czech Republic)</option>
+    <option value="+45" {{ old('phone_country_code') == '+45' ? 'selected' : '' }}>🇩🇰 +45 (Denmark)</option>
+    <option value="+20" {{ old('phone_country_code') == '+20' ? 'selected' : '' }}>🇪🇬 +20 (Egypt)</option>
+    <option value="+33" {{ old('phone_country_code') == '+33' ? 'selected' : '' }}>🇫🇷 +33 (France)</option>
+    <option value="+49" {{ old('phone_country_code') == '+49' ? 'selected' : '' }}>🇩🇪 +49 (Germany)</option>
+    <option value="+30" {{ old('phone_country_code') == '+30' ? 'selected' : '' }}>🇬🇷 +30 (Greece)</option>
+    <option value="+852" {{ old('phone_country_code') == '+852' ? 'selected' : '' }}>🇭🇰 +852 (Hong Kong)</option>
+    <option value="+36" {{ old('phone_country_code') == '+36' ? 'selected' : '' }}>🇭🇺 +36 (Hungary)</option>
+    <option value="+62" {{ old('phone_country_code') == '+62' ? 'selected' : '' }}>🇮🇩 +62 (Indonesia)</option>
+    <option value="+98" {{ old('phone_country_code') == '+98' ? 'selected' : '' }}>🇮🇷 +98 (Iran)</option>
+    <option value="+964" {{ old('phone_country_code') == '+964' ? 'selected' : '' }}>🇮🇶 +964 (Iraq)</option>
+    <option value="+39" {{ old('phone_country_code') == '+39' ? 'selected' : '' }}>🇮🇹 +39 (Italy)</option>
+    <option value="+81" {{ old('phone_country_code') == '+81' ? 'selected' : '' }}>🇯🇵 +81 (Japan)</option>
+    <option value="+962" {{ old('phone_country_code') == '+962' ? 'selected' : '' }}>🇯🇴 +962 (Jordan)</option>
+    <option value="+7" {{ old('phone_country_code') == '+7' ? 'selected' : '' }}>🇷🇺 +7 (Russia/Kazakhstan)</option>
+    <option value="+254" {{ old('phone_country_code') == '+254' ? 'selected' : '' }}>🇰🇪 +254 (Kenya)</option>
+    <option value="+82" {{ old('phone_country_code') == '+82' ? 'selected' : '' }}>🇰🇷 +82 (South Korea)</option>
+    <option value="+961" {{ old('phone_country_code') == '+961' ? 'selected' : '' }}>🇱🇧 +961 (Lebanon)</option>
+    <option value="+218" {{ old('phone_country_code') == '+218' ? 'selected' : '' }}>🇱🇾 +218 (Libya)</option>
+    <option value="+60" {{ old('phone_country_code') == '+60' ? 'selected' : '' }}>🇲🇾 +60 (Malaysia)</option>
+    <option value="+212" {{ old('phone_country_code') == '+212' ? 'selected' : '' }}>🇲🇦 +212 (Morocco)</option>
+    <option value="+977" {{ old('phone_country_code') == '+977' ? 'selected' : '' }}>🇳🇵 +977 (Nepal)</option>
+    <option value="+31" {{ old('phone_country_code') == '+31' ? 'selected' : '' }}>🇳🇱 +31 (Netherlands)</option>
+    <option value="+234" {{ old('phone_country_code') == '+234' ? 'selected' : '' }}>🇳🇬 +234 (Nigeria)</option>
+    <option value="+47" {{ old('phone_country_code') == '+47' ? 'selected' : '' }}>🇳🇴 +47 (Norway)</option>
+    <option value="+92" {{ old('phone_country_code') == '+92' ? 'selected' : '' }}>🇵🇰 +92 (Pakistan)</option>
+    <option value="+51" {{ old('phone_country_code') == '+51' ? 'selected' : '' }}>🇵🇪 +51 (Peru)</option>
+    <option value="+63" {{ old('phone_country_code') == '+63' ? 'selected' : '' }}>🇵🇭 +63 (Philippines)</option>
+    <option value="+48" {{ old('phone_country_code') == '+48' ? 'selected' : '' }}>🇵🇱 +48 (Poland)</option>
+    <option value="+351" {{ old('phone_country_code') == '+351' ? 'selected' : '' }}>🇵🇹 +351 (Portugal)</option>
+    <option value="+7" {{ old('phone_country_code') == '+7' ? 'selected' : '' }}>🇷🇺 +7 (Russia)</option>
+    <option value="+65" {{ old('phone_country_code') == '+65' ? 'selected' : '' }}>🇸🇬 +65 (Singapore)</option>
+    <option value="+27" {{ old('phone_country_code') == '+27' ? 'selected' : '' }}>🇿🇦 +27 (South Africa)</option>
+    <option value="+34" {{ old('phone_country_code') == '+34' ? 'selected' : '' }}>🇪🇸 +34 (Spain)</option>
+    <option value="+94" {{ old('phone_country_code') == '+94' ? 'selected' : '' }}>🇱🇰 +94 (Sri Lanka)</option>
+    <option value="+46" {{ old('phone_country_code') == '+46' ? 'selected' : '' }}>🇸🇪 +46 (Sweden)</option>
+    <option value="+41" {{ old('phone_country_code') == '+41' ? 'selected' : '' }}>🇨🇭 +41 (Switzerland)</option>
+    <option value="+66" {{ old('phone_country_code') == '+66' ? 'selected' : '' }}>🇹🇭 +66 (Thailand)</option>
+    <option value="+90" {{ old('phone_country_code') == '+90' ? 'selected' : '' }}>🇹🇷 +90 (Turkey)</option>
+    <option value="+256" {{ old('phone_country_code') == '+256' ? 'selected' : '' }}>🇺🇬 +256 (Uganda)</option>
+    <option value="+380" {{ old('phone_country_code') == '+380' ? 'selected' : '' }}>🇺🇦 +380 (Ukraine)</option>
+    <option value="+598" {{ old('phone_country_code') == '+598' ? 'selected' : '' }}>🇺🇾 +598 (Uruguay)</option>
+    <option value="+998" {{ old('phone_country_code') == '+998' ? 'selected' : '' }}>🇺🇿 +998 (Uzbekistan)</option>
+    <option value="+58" {{ old('phone_country_code') == '+58' ? 'selected' : '' }}>🇻🇪 +58 (Venezuela)</option>
+    <option value="+84" {{ old('phone_country_code') == '+84' ? 'selected' : '' }}>🇻🇳 +84 (Vietnam)</option>
+    <option value="+967" {{ old('phone_country_code') == '+967' ? 'selected' : '' }}>🇾🇪 +967 (Yemen)</option>
+                                     </select>
+                                     <input type="tel" 
+                                            class="form-control phone-number-input @error('phone_number') is-invalid @enderror" 
+                                            id="phone_number" 
+                                            name="phone_number" 
+                                            value="{{ old('phone_number') }}" 
+                                            placeholder="3xxxxxxxxx"
+                                            required>
+                                 </div>
+                                 @error('phone_country_code')
+                                     <div class="invalid-feedback">{{ $message }}</div>
+                                 @enderror
+                                 @error('phone_number')
+                                     <div class="invalid-feedback">{{ $message }}</div>
+                                 @enderror
+                             </div>
                             
-                            <div class="col-md-6 mb-3">
-                                <label for="secondary_phone_number" class="form-label">Secondary Phone (Optional)</label>
-                                <input type="tel" 
-                                       class="form-control @error('secondary_phone_number') is-invalid @enderror" 
-                                       id="secondary_phone_number" 
-                                       name="secondary_phone_number" 
-                                       value="{{ old('secondary_phone_number') }}"
-                                       placeholder="Alternative contact">
-                                @error('secondary_phone_number')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                                         <div class="col-md-6 mb-3">
+                                 <label for="secondary_phone_number" class="form-label">Secondary Phone (Optional)</label>
+                                 <div class="phone-input-group">
+                                     <select class="form-select country-code-select" 
+                                             id="secondary_phone_country_code" 
+                                             name="secondary_phone_country_code">
+                                                                                   <option value="">Code</option>
+                                                                                   <option value="+92" {{ old('secondary_phone_country_code') == '+92' ? 'selected' : '' }}>🇵🇰 +92 (Pakistan)</option>
+    <option value="+91" {{ old('secondary_phone_country_code') == '+91' ? 'selected' : '' }}>🇮🇳 +91 (India)</option>
+    <option value="+880" {{ old('secondary_phone_country_code') == '+880' ? 'selected' : '' }}>🇧🇩 +880 (Bangladesh)</option>
+    <option value="+1" {{ old('secondary_phone_country_code') == '+1' ? 'selected' : '' }}>🇺🇸 +1 (USA/Canada)</option>
+    <option value="+44" {{ old('secondary_phone_country_code') == '+44' ? 'selected' : '' }}>🇬🇧 +44 (UK)</option>
+    <option value="+971" {{ old('secondary_phone_country_code') == '+971' ? 'selected' : '' }}>🇦🇪 +971 (UAE)</option>
+    <option value="+966" {{ old('secondary_phone_country_code') == '+966' ? 'selected' : '' }}>🇸🇦 +966 (Saudi Arabia)</option>
+    <option value="+974" {{ old('secondary_phone_country_code') == '+974' ? 'selected' : '' }}>🇶🇦 +974 (Qatar)</option>
+    <option value="+973" {{ old('secondary_phone_country_code') == '+973' ? 'selected' : '' }}>🇧🇭 +973 (Bahrain)</option>
+    <option value="+965" {{ old('secondary_phone_country_code') == '+965' ? 'selected' : '' }}>🇰🇼 +965 (Kuwait)</option>
+    <option value="+968" {{ old('secondary_phone_country_code') == '+968' ? 'selected' : '' }}>🇴🇲 +968 (Oman)</option>
+
+    <!-- More countries -->
+    <option value="+93" {{ old('secondary_phone_country_code') == '+93' ? 'selected' : '' }}>🇦🇫 +93 (Afghanistan)</option>
+    <option value="+355" {{ old('secondary_phone_country_code') == '+355' ? 'selected' : '' }}>🇦🇱 +355 (Albania)</option>
+    <option value="+213" {{ old('secondary_phone_country_code') == '+213' ? 'selected' : '' }}>🇩🇿 +213 (Algeria)</option>
+    <option value="+376" {{ old('secondary_phone_country_code') == '+376' ? 'selected' : '' }}>🇦🇩 +376 (Andorra)</option>
+    <option value="+244" {{ old('secondary_phone_country_code') == '+244' ? 'selected' : '' }}>🇦🇴 +244 (Angola)</option>
+    <option value="+54" {{ old('secondary_phone_country_code') == '+54' ? 'selected' : '' }}>🇦🇷 +54 (Argentina)</option>
+    <option value="+374" {{ old('secondary_phone_country_code') == '+374' ? 'selected' : '' }}>🇦🇲 +374 (Armenia)</option>
+    <option value="+61" {{ old('secondary_phone_country_code') == '+61' ? 'selected' : '' }}>🇦🇺 +61 (Australia)</option>
+    <option value="+43" {{ old('secondary_phone_country_code') == '+43' ? 'selected' : '' }}>🇦🇹 +43 (Austria)</option>
+    <option value="+994" {{ old('secondary_phone_country_code') == '+994' ? 'selected' : '' }}>🇦🇿 +994 (Azerbaijan)</option>
+    <option value="+32" {{ old('secondary_phone_country_code') == '+32' ? 'selected' : '' }}>🇧🇪 +32 (Belgium)</option>
+    <option value="+229" {{ old('secondary_phone_country_code') == '+229' ? 'selected' : '' }}>🇧🇯 +229 (Benin)</option>
+    <option value="+975" {{ old('secondary_phone_country_code') == '+975' ? 'selected' : '' }}>🇧🇹 +975 (Bhutan)</option>
+    <option value="+55" {{ old('secondary_phone_country_code') == '+55' ? 'selected' : '' }}>🇧🇷 +55 (Brazil)</option>
+    <option value="+359" {{ old('secondary_phone_country_code') == '+359' ? 'selected' : '' }}>🇧🇬 +359 (Bulgaria)</option>
+    <option value="+855" {{ old('secondary_phone_country_code') == '+855' ? 'selected' : '' }}>🇰🇭 +855 (Cambodia)</option>
+    <option value="+237" {{ old('secondary_phone_country_code') == '+237' ? 'selected' : '' }}>🇨🇲 +237 (Cameroon)</option>
+    <option value="+86" {{ old('secondary_phone_country_code') == '+86' ? 'selected' : '' }}>🇨🇳 +86 (China)</option>
+    <option value="+57" {{ old('secondary_phone_country_code') == '+57' ? 'selected' : '' }}>🇨🇴 +57 (Colombia)</option>
+    <option value="+506" {{ old('secondary_phone_country_code') == '+506' ? 'selected' : '' }}>🇨🇷 +506 (Costa Rica)</option>
+    <option value="+385" {{ old('secondary_phone_country_code') == '+385' ? 'selected' : '' }}>🇭🇷 +385 (Croatia)</option>
+    <option value="+420" {{ old('secondary_phone_country_code') == '+420' ? 'selected' : '' }}>🇨🇿 +420 (Czech Republic)</option>
+    <option value="+45" {{ old('secondary_phone_country_code') == '+45' ? 'selected' : '' }}>🇩🇰 +45 (Denmark)</option>
+    <option value="+20" {{ old('secondary_phone_country_code') == '+20' ? 'selected' : '' }}>🇪🇬 +20 (Egypt)</option>
+    <option value="+33" {{ old('secondary_phone_country_code') == '+33' ? 'selected' : '' }}>🇫🇷 +33 (France)</option>
+    <option value="+49" {{ old('secondary_phone_country_code') == '+49' ? 'selected' : '' }}>🇩🇪 +49 (Germany)</option>
+    <option value="+30" {{ old('secondary_phone_country_code') == '+30' ? 'selected' : '' }}>🇬🇷 +30 (Greece)</option>
+    <option value="+852" {{ old('secondary_phone_country_code') == '+852' ? 'selected' : '' }}>🇭🇰 +852 (Hong Kong)</option>
+    <option value="+36" {{ old('secondary_phone_country_code') == '+36' ? 'selected' : '' }}>🇭🇺 +36 (Hungary)</option>
+    <option value="+62" {{ old('secondary_phone_country_code') == '+62' ? 'selected' : '' }}>🇮🇩 +62 (Indonesia)</option>
+    <option value="+98" {{ old('secondary_phone_country_code') == '+98' ? 'selected' : '' }}>🇮🇷 +98 (Iran)</option>
+    <option value="+964" {{ old('secondary_phone_country_code') == '+964' ? 'selected' : '' }}>🇮🇶 +964 (Iraq)</option>
+    <option value="+39" {{ old('secondary_phone_country_code') == '+39' ? 'selected' : '' }}>🇮🇹 +39 (Italy)</option>
+    <option value="+81" {{ old('secondary_phone_country_code') == '+81' ? 'selected' : '' }}>🇯🇵 +81 (Japan)</option>
+    <option value="+962" {{ old('secondary_phone_country_code') == '+962' ? 'selected' : '' }}>🇯🇴 +962 (Jordan)</option>
+    <option value="+7" {{ old('secondary_phone_country_code') == '+7' ? 'selected' : '' }}>🇷🇺 +7 (Russia/Kazakhstan)</option>
+    <option value="+254" {{ old('secondary_phone_country_code') == '+254' ? 'selected' : '' }}>🇰🇪 +254 (Kenya)</option>
+    <option value="+82" {{ old('secondary_phone_country_code') == '+82' ? 'selected' : '' }}>🇰🇷 +82 (South Korea)</option>
+    <option value="+961" {{ old('secondary_phone_country_code') == '+961' ? 'selected' : '' }}>🇱🇧 +961 (Lebanon)</option>
+    <option value="+218" {{ old('secondary_phone_country_code') == '+218' ? 'selected' : '' }}>🇱🇾 +218 (Libya)</option>
+    <option value="+60" {{ old('secondary_phone_country_code') == '+60' ? 'selected' : '' }}>🇲🇾 +60 (Malaysia)</option>
+    <option value="+212" {{ old('secondary_phone_country_code') == '+212' ? 'selected' : '' }}>🇲🇦 +212 (Morocco)</option>
+    <option value="+977" {{ old('secondary_phone_country_code') == '+977' ? 'selected' : '' }}>🇳🇵 +977 (Nepal)</option>
+    <option value="+31" {{ old('secondary_phone_country_code') == '+31' ? 'selected' : '' }}>🇳🇱 +31 (Netherlands)</option>
+    <option value="+234" {{ old('secondary_phone_country_code') == '+234' ? 'selected' : '' }}>🇳🇬 +234 (Nigeria)</option>
+    <option value="+47" {{ old('secondary_phone_country_code') == '+47' ? 'selected' : '' }}>🇳🇴 +47 (Norway)</option>
+    <option value="+51" {{ old('secondary_phone_country_code') == '+51' ? 'selected' : '' }}>🇵🇪 +51 (Peru)</option>
+    <option value="+63" {{ old('secondary_phone_country_code') == '+63' ? 'selected' : '' }}>🇵🇭 +63 (Philippines)</option>
+    <option value="+48" {{ old('secondary_phone_country_code') == '+48' ? 'selected' : '' }}>🇵🇱 +48 (Poland)</option>
+    <option value="+351" {{ old('secondary_phone_country_code') == '+351' ? 'selected' : '' }}>🇵🇹 +351 (Portugal)</option>
+    <option value="+65" {{ old('secondary_phone_country_code') == '+65' ? 'selected' : '' }}>🇸🇬 +65 (Singapore)</option>
+    <option value="+27" {{ old('secondary_phone_country_code') == '+27' ? 'selected' : '' }}>🇿🇦 +27 (South Africa)</option>
+    <option value="+34" {{ old('secondary_phone_country_code') == '+34' ? 'selected' : '' }}>🇪🇸 +34 (Spain)</option>
+    <option value="+94" {{ old('secondary_phone_country_code') == '+94' ? 'selected' : '' }}>🇱🇰 +94 (Sri Lanka)</option>
+    <option value="+46" {{ old('secondary_phone_country_code') == '+46' ? 'selected' : '' }}>🇸🇪 +46 (Sweden)</option>
+    <option value="+41" {{ old('secondary_phone_country_code') == '+41' ? 'selected' : '' }}>🇨🇭 +41 (Switzerland)</option>
+    <option value="+66" {{ old('secondary_phone_country_code') == '+66' ? 'selected' : '' }}>🇹🇭 +66 (Thailand)</option>
+    <option value="+90" {{ old('secondary_phone_country_code') == '+90' ? 'selected' : '' }}>🇹🇷 +90 (Turkey)</option>
+    <option value="+256" {{ old('secondary_phone_country_code') == '+256' ? 'selected' : '' }}>🇺🇬 +256 (Uganda)</option>
+    <option value="+380" {{ old('secondary_phone_country_code') == '+380' ? 'selected' : '' }}>🇺🇦 +380 (Ukraine)</option>
+    <option value="+598" {{ old('secondary_phone_country_code') == '+598' ? 'selected' : '' }}>🇺🇾 +598 (Uruguay)</option>
+    <option value="+998" {{ old('secondary_phone_country_code') == '+998' ? 'selected' : '' }}>🇺🇿 +998 (Uzbekistan)</option>
+    <option value="+58" {{ old('secondary_phone_country_code') == '+58' ? 'selected' : '' }}>🇻🇪 +58 (Venezuela)</option>
+    <option value="+84" {{ old('secondary_phone_country_code') == '+84' ? 'selected' : '' }}>🇻🇳 +84 (Vietnam)</option>
+    <option value="+967" {{ old('secondary_phone_country_code') == '+967' ? 'selected' : '' }}>🇾🇪 +967 (Yemen)</option>
+                                     </select>
+                                     <input type="tel" 
+                                            class="form-control phone-number-input @error('secondary_phone_number') is-invalid @enderror" 
+                                            id="secondary_phone_number" 
+                                            name="secondary_phone_number" 
+                                            value="{{ old('secondary_phone_number') }}"
+                                            placeholder="Alternative contact">
+                                 </div>
+                                 @error('secondary_phone_number')
+                                     <div class="invalid-feedback">{{ $message }}</div>
+                                 @enderror
+                             </div>
                         </div>
 
 
@@ -300,10 +524,98 @@
                                         name="country" 
                                         required>
                                     <option value="">Select Country</option>
-                                    <option value="Pakistan" {{ old('country') == 'Pakistan' ? 'selected' : '' }}>Pakistan</option>
-                                    <option value="India" {{ old('country') == 'India' ? 'selected' : '' }}>India</option>
-                                    <option value="Bangladesh" {{ old('country') == 'Bangladesh' ? 'selected' : '' }}>Bangladesh</option>
-                                    <option value="Other" {{ old('country') == 'Other' ? 'selected' : '' }}>Other</option>
+                                   <!-- Pinned Countries -->
+    <option value="Pakistan" {{ old('country') == 'Pakistan' ? 'selected' : '' }}>Pakistan</option>
+    <option value="Saudi Arabia" {{ old('country') == 'Saudi Arabia' ? 'selected' : '' }}>Saudi Arabia</option>
+    <option disabled>──────────</option>
+
+    <!-- Full List -->
+    <option value="Afghanistan" {{ old('country') == 'Afghanistan' ? 'selected' : '' }}>Afghanistan</option>
+    <option value="Albania" {{ old('country') == 'Albania' ? 'selected' : '' }}>Albania</option>
+    <option value="Algeria" {{ old('country') == 'Algeria' ? 'selected' : '' }}>Algeria</option>
+    <option value="Andorra" {{ old('country') == 'Andorra' ? 'selected' : '' }}>Andorra</option>
+    <option value="Angola" {{ old('country') == 'Angola' ? 'selected' : '' }}>Angola</option>
+    <option value="Argentina" {{ old('country') == 'Argentina' ? 'selected' : '' }}>Argentina</option>
+    <option value="Armenia" {{ old('country') == 'Armenia' ? 'selected' : '' }}>Armenia</option>
+    <option value="Australia" {{ old('country') == 'Australia' ? 'selected' : '' }}>Australia</option>
+    <option value="Austria" {{ old('country') == 'Austria' ? 'selected' : '' }}>Austria</option>
+    <option value="Azerbaijan" {{ old('country') == 'Azerbaijan' ? 'selected' : '' }}>Azerbaijan</option>
+    <option value="Bahrain" {{ old('country') == 'Bahrain' ? 'selected' : '' }}>Bahrain</option>
+    <option value="Bangladesh" {{ old('country') == 'Bangladesh' ? 'selected' : '' }}>Bangladesh</option>
+    <option value="Belgium" {{ old('country') == 'Belgium' ? 'selected' : '' }}>Belgium</option>
+    <option value="Bhutan" {{ old('country') == 'Bhutan' ? 'selected' : '' }}>Bhutan</option>
+    <option value="Bolivia" {{ old('country') == 'Bolivia' ? 'selected' : '' }}>Bolivia</option>
+    <option value="Bosnia and Herzegovina" {{ old('country') == 'Bosnia and Herzegovina' ? 'selected' : '' }}>Bosnia and Herzegovina</option>
+    <option value="Brazil" {{ old('country') == 'Brazil' ? 'selected' : '' }}>Brazil</option>
+    <option value="Brunei" {{ old('country') == 'Brunei' ? 'selected' : '' }}>Brunei</option>
+    <option value="Bulgaria" {{ old('country') == 'Bulgaria' ? 'selected' : '' }}>Bulgaria</option>
+    <option value="Cambodia" {{ old('country') == 'Cambodia' ? 'selected' : '' }}>Cambodia</option>
+    <option value="Canada" {{ old('country') == 'Canada' ? 'selected' : '' }}>Canada</option>
+    <option value="China" {{ old('country') == 'China' ? 'selected' : '' }}>China</option>
+    <option value="Colombia" {{ old('country') == 'Colombia' ? 'selected' : '' }}>Colombia</option>
+    <option value="Croatia" {{ old('country') == 'Croatia' ? 'selected' : '' }}>Croatia</option>
+    <option value="Cuba" {{ old('country') == 'Cuba' ? 'selected' : '' }}>Cuba</option>
+    <option value="Cyprus" {{ old('country') == 'Cyprus' ? 'selected' : '' }}>Cyprus</option>
+    <option value="Czech Republic" {{ old('country') == 'Czech Republic' ? 'selected' : '' }}>Czech Republic</option>
+    <option value="Denmark" {{ old('country') == 'Denmark' ? 'selected' : '' }}>Denmark</option>
+    <option value="Egypt" {{ old('country') == 'Egypt' ? 'selected' : '' }}>Egypt</option>
+    <option value="Estonia" {{ old('country') == 'Estonia' ? 'selected' : '' }}>Estonia</option>
+    <option value="Ethiopia" {{ old('country') == 'Ethiopia' ? 'selected' : '' }}>Ethiopia</option>
+    <option value="Finland" {{ old('country') == 'Finland' ? 'selected' : '' }}>Finland</option>
+    <option value="France" {{ old('country') == 'France' ? 'selected' : '' }}>France</option>
+    <option value="Germany" {{ old('country') == 'Germany' ? 'selected' : '' }}>Germany</option>
+    <option value="Greece" {{ old('country') == 'Greece' ? 'selected' : '' }}>Greece</option>
+    <option value="Hong Kong" {{ old('country') == 'Hong Kong' ? 'selected' : '' }}>Hong Kong</option>
+    <option value="Hungary" {{ old('country') == 'Hungary' ? 'selected' : '' }}>Hungary</option>
+    <option value="Iceland" {{ old('country') == 'Iceland' ? 'selected' : '' }}>Iceland</option>
+    <option value="India" {{ old('country') == 'India' ? 'selected' : '' }}>India</option>
+    <option value="Indonesia" {{ old('country') == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
+    <option value="Iran" {{ old('country') == 'Iran' ? 'selected' : '' }}>Iran</option>
+    <option value="Iraq" {{ old('country') == 'Iraq' ? 'selected' : '' }}>Iraq</option>
+    <option value="Ireland" {{ old('country') == 'Ireland' ? 'selected' : '' }}>Ireland</option>
+    <option value="Italy" {{ old('country') == 'Italy' ? 'selected' : '' }}>Italy</option>
+    <option value="Japan" {{ old('country') == 'Japan' ? 'selected' : '' }}>Japan</option>
+    <option value="Jordan" {{ old('country') == 'Jordan' ? 'selected' : '' }}>Jordan</option>
+    <option value="Kenya" {{ old('country') == 'Kenya' ? 'selected' : '' }}>Kenya</option>
+    <option value="Kuwait" {{ old('country') == 'Kuwait' ? 'selected' : '' }}>Kuwait</option>
+    <option value="Lebanon" {{ old('country') == 'Lebanon' ? 'selected' : '' }}>Lebanon</option>
+    <option value="Libya" {{ old('country') == 'Libya' ? 'selected' : '' }}>Libya</option>
+    <option value="Malaysia" {{ old('country') == 'Malaysia' ? 'selected' : '' }}>Malaysia</option>
+    <option value="Maldives" {{ old('country') == 'Maldives' ? 'selected' : '' }}>Maldives</option>
+    <option value="Mauritius" {{ old('country') == 'Mauritius' ? 'selected' : '' }}>Mauritius</option>
+    <option value="Mexico" {{ old('country') == 'Mexico' ? 'selected' : '' }}>Mexico</option>
+    <option value="Morocco" {{ old('country') == 'Morocco' ? 'selected' : '' }}>Morocco</option>
+    <option value="Nepal" {{ old('country') == 'Nepal' ? 'selected' : '' }}>Nepal</option>
+    <option value="Netherlands" {{ old('country') == 'Netherlands' ? 'selected' : '' }}>Netherlands</option>
+    <option value="New Zealand" {{ old('country') == 'New Zealand' ? 'selected' : '' }}>New Zealand</option>
+    <option value="Nigeria" {{ old('country') == 'Nigeria' ? 'selected' : '' }}>Nigeria</option>
+    <option value="Norway" {{ old('country') == 'Norway' ? 'selected' : '' }}>Norway</option>
+    <option value="Oman" {{ old('country') == 'Oman' ? 'selected' : '' }}>Oman</option>
+    <option value="Palestine" {{ old('country') == 'Palestine' ? 'selected' : '' }}>Palestine</option>
+    <option value="Philippines" {{ old('country') == 'Philippines' ? 'selected' : '' }}>Philippines</option>
+    <option value="Poland" {{ old('country') == 'Poland' ? 'selected' : '' }}>Poland</option>
+    <option value="Portugal" {{ old('country') == 'Portugal' ? 'selected' : '' }}>Portugal</option>
+    <option value="Qatar" {{ old('country') == 'Qatar' ? 'selected' : '' }}>Qatar</option>
+    <option value="Russia" {{ old('country') == 'Russia' ? 'selected' : '' }}>Russia</option>
+    <option value="Singapore" {{ old('country') == 'Singapore' ? 'selected' : '' }}>Singapore</option>
+    <option value="South Africa" {{ old('country') == 'South Africa' ? 'selected' : '' }}>South Africa</option>
+    <option value="Spain" {{ old('country') == 'Spain' ? 'selected' : '' }}>Spain</option>
+    <option value="Sri Lanka" {{ old('country') == 'Sri Lanka' ? 'selected' : '' }}>Sri Lanka</option>
+    <option value="Sweden" {{ old('country') == 'Sweden' ? 'selected' : '' }}>Sweden</option>
+    <option value="Switzerland" {{ old('country') == 'Switzerland' ? 'selected' : '' }}>Switzerland</option>
+    <option value="Syria" {{ old('country') == 'Syria' ? 'selected' : '' }}>Syria</option>
+    <option value="Thailand" {{ old('country') == 'Thailand' ? 'selected' : '' }}>Thailand</option>
+    <option value="Turkey" {{ old('country') == 'Turkey' ? 'selected' : '' }}>Turkey</option>
+    <option value="UAE" {{ old('country') == 'UAE' ? 'selected' : '' }}>United Arab Emirates</option>
+    <option value="UK" {{ old('country') == 'UK' ? 'selected' : '' }}>United Kingdom</option>
+    <option value="USA" {{ old('country') == 'USA' ? 'selected' : '' }}>United States</option>
+    <option value="Uzbekistan" {{ old('country') == 'Uzbekistan' ? 'selected' : '' }}>Uzbekistan</option>
+    <option value="Venezuela" {{ old('country') == 'Venezuela' ? 'selected' : '' }}>Venezuela</option>
+    <option value="Vietnam" {{ old('country') == 'Vietnam' ? 'selected' : '' }}>Vietnam</option>
+    <option value="Yemen" {{ old('country') == 'Yemen' ? 'selected' : '' }}>Yemen</option>
+    <option value="Zambia" {{ old('country') == 'Zambia' ? 'selected' : '' }}>Zambia</option>
+    <option value="Zimbabwe" {{ old('country') == 'Zimbabwe' ? 'selected' : '' }}>Zimbabwe</option>
+    <option value="Other" {{ old('country') == 'Other' ? 'selected' : '' }}>Other</option>
                                 </select>
                                 @error('country')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -439,9 +751,17 @@
             const submitBtn = document.getElementById('submitBtn');
             const STORAGE_KEY = 'notesOrderForm_autoSave';
             
-            // Form Auto-save functionality
-            const formInputs = form.querySelectorAll('input, textarea, select');
-            let autoSaveTimeout;
+                         // Form Auto-save functionality
+             const formInputs = form.querySelectorAll('input, textarea, select');
+             let autoSaveTimeout;
+             
+             // Set default country code for Pakistan if not selected
+             const phoneCountryCode = document.getElementById('phone_country_code');
+             const secondaryPhoneCountryCode = document.getElementById('secondary_phone_country_code');
+             
+             if (phoneCountryCode && !phoneCountryCode.value) {
+                 phoneCountryCode.value = '+92'; // Default to Pakistan
+             }
             
             // Load saved data on page load
             loadSavedData();
@@ -494,24 +814,36 @@
                     
                     const data = JSON.parse(savedData);
                     
-                    // Load regular inputs
-                    Object.keys(data).forEach(key => {
-                        if (key === 'semesters') {
-                            // Load semester checkboxes
-                            data.semesters.forEach(semester => {
-                                const checkbox = form.querySelector(`input[name="semesters[]"][value="${semester}"]`);
-                                if (checkbox) checkbox.checked = true;
-                            });
-                        } else if (key === 'fees_paid') {
-                            // Load radio button
-                            const radio = form.querySelector(`input[name="fees_paid"][value="${data[key]}"]`);
-                            if (radio) radio.checked = true;
-                        } else {
-                            // Load other inputs
-                            const input = form.querySelector(`[name="${key}"]`);
-                            if (input) input.value = data[key];
-                        }
-                    });
+                                         // Load regular inputs
+                     Object.keys(data).forEach(key => {
+                         if (key === 'semesters') {
+                             // Load semester checkboxes
+                             data.semesters.forEach(semester => {
+                                 const checkbox = form.querySelector(`input[name="semesters[]"][value="${semester}"]`);
+                                 if (checkbox) checkbox.checked = true;
+                             });
+                         } else if (key === 'fees_paid') {
+                             // Load radio button
+                             const radio = form.querySelector(`input[name="fees_paid"][value="${data[key]}"]`);
+                             if (radio) radio.checked = true;
+                         } else if (key === 'phone_number' || key === 'secondary_phone_number') {
+                             // Handle phone numbers with country codes
+                             const input = form.querySelector(`[name="${key}"]`);
+                             if (input && data[key]) {
+                                 // Remove country code from saved phone number if it exists
+                                 const phoneWithoutCode = data[key].replace(/^\+?\d{1,4}/, '');
+                                 input.value = phoneWithoutCode;
+                             }
+                         } else if (key === 'phone_country_code' || key === 'secondary_phone_country_code') {
+                             // Load country codes
+                             const select = form.querySelector(`[name="${key}"]`);
+                             if (select) select.value = data[key];
+                         } else {
+                             // Load other inputs
+                             const input = form.querySelector(`[name="${key}"]`);
+                             if (input) input.value = data[key];
+                         }
+                     });
                     
                     // Show restored data indicator
                     showRestoredDataIndicator();
