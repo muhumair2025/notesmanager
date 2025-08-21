@@ -10,7 +10,38 @@ class TrackingController extends Controller
 {
     public function index()
     {
-        return view('tracking.index');
+        // Get recent orders for marquee (last 10 orders)
+        $recentOrders = Order::orderBy('created_at', 'desc')
+                            ->take(10)
+                            ->get()
+                            ->map(function ($order) {
+                                return [
+                                    'name' => $this->maskName($order->name),
+                                    'semesters' => $order->semesters,
+                                    'time_ago' => $order->created_at->diffForHumans()
+                                ];
+                            });
+        
+        return view('tracking.index', compact('recentOrders'));
+    }
+    
+    private function maskName($name)
+    {
+        $words = explode(' ', trim($name));
+        $maskedWords = [];
+        
+        foreach ($words as $word) {
+            if (strlen($word) <= 2) {
+                $maskedWords[] = $word;
+            } else {
+                $firstChar = substr($word, 0, 1);
+                $lastChar = substr($word, -1);
+                $middle = str_repeat('*', strlen($word) - 2);
+                $maskedWords[] = $firstChar . $middle . $lastChar;
+            }
+        }
+        
+        return implode(' ', $maskedWords);
     }
 
     public function track(Request $request)
