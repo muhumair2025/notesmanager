@@ -58,6 +58,45 @@ class UserController extends Controller
 
         // Combine country code with phone number
         $fullPhoneNumber = $request->phone_country_code . $request->phone_number;
+        
+        // Check for existing orders with the same semesters
+        $cleanPhone = preg_replace('/[^0-9]/', '', $fullPhoneNumber);
+        $existingOrders = Order::where('phone_number', 'LIKE', '%' . $cleanPhone . '%')
+                              ->whereNotIn('status', ['cancelled'])
+                              ->get();
+        
+        $duplicateSemesters = [];
+        foreach ($request->semesters as $semester) {
+            foreach ($existingOrders as $existingOrder) {
+                if (in_array($semester, $existingOrder->semesters)) {
+                    $duplicateSemesters[] = $semester;
+                    break;
+                }
+            }
+        }
+        
+        if (!empty($duplicateSemesters)) {
+            $semesterLabels = [
+                'sem 1 notes' => 'Semester 1',
+                'sem 2 notes' => 'Semester 2', 
+                'sem 3 notes' => 'Semester 3',
+                'sem 4 notes' => 'Semester 4',
+                'sem 5 notes' => 'Semester 5',
+                'sem 6 notes' => 'Semester 6',
+                'sem 7 notes' => 'Semester 7'
+            ];
+            
+            $duplicateLabels = array_map(function($sem) use ($semesterLabels) {
+                return $semesterLabels[$sem] ?? $sem;
+            }, array_unique($duplicateSemesters));
+            
+            $semesterText = count($duplicateLabels) === 1 ? $duplicateLabels[0] : implode(', ', $duplicateLabels);
+            
+            return redirect()->back()
+                ->withErrors(['semester_duplicate' => "You have already placed an order for {$semesterText} notes. Cannot place duplicate orders for the same semester."])
+                ->withInput();
+        }
+
         $fullSecondaryPhoneNumber = null;
         if ($request->secondary_phone_number && $request->secondary_phone_country_code) {
             $fullSecondaryPhoneNumber = $request->secondary_phone_country_code . $request->secondary_phone_number;

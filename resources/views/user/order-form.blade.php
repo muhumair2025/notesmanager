@@ -245,6 +245,9 @@
                         @if($errors->has('rate_limit'))
                             <strong>Rate Limit Exceeded:</strong>
                             <div class="mt-2">{{ $errors->first('rate_limit') }}</div>
+                        @elseif($errors->has('semester_duplicate'))
+                            <strong>Duplicate Order Detected:</strong>
+                            <div class="mt-2">{{ $errors->first('semester_duplicate') }}</div>
                         @else
                             <strong>Please fix the following:</strong>
                             <ul class="mb-0 mt-2 ps-3">
